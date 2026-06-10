@@ -14,7 +14,7 @@ import os
 st.set_page_config(
     page_title="GhostJobs Detector",
     page_icon="👻",
-    layout="centered",
+    layout="wide",
     initial_sidebar_state="expanded"
 )
 
@@ -90,7 +90,8 @@ st.markdown("""
 html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
 
 /* Hide default streamlit header/footer */
-#MainMenu, footer, header { visibility: hidden; }
+#MainMenu { visibility: hidden; }
+footer { visibility: hidden; }
 
 /* Sidebar */
 [data-testid="stSidebar"] {
