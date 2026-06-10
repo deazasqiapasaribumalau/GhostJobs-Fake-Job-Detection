@@ -1,0 +1,30 @@
+{
+  "threshold_optimal": 0.3652500000000001,
+  "kolom_numerik": [
+    "telecommuting",
+    "has_company_logo",
+    "has_questions",
+    "desc_len",
+    "req_len",
+    "benefit_len",
+    "company_profile_len",
+    "has_salary",
+    "has_email_in_desc",
+    "exc_mark_count",
+    "has_urgency_words"
+  ],
+  "kolom_teks": [
+    "title",
+    "location",
+    "department",
+    "company_profile",
+    "description",
+    "requirements",
+    "benefits",
+    "employment_type",
+    "required_experience",
+    "required_education",
+    "industry",
+    "function"
+  ]
+}
