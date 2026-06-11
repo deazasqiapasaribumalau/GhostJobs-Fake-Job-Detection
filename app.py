@@ -14,7 +14,7 @@ import os
 st.set_page_config(
     page_title="GhostJobs Detector",
     page_icon="👻",
-    layout="wide",
+    layout="centered",
     initial_sidebar_state="expanded"
 )
 
@@ -39,7 +39,7 @@ THRESHOLD     = config["threshold_optimal"]
 KOLOM_NUMERIK = config["kolom_numerik"]
 KOLOM_TEKS    = config["kolom_teks"]
 
-# ── Helpers ───────────────────────────────────────────────────────────────────
+# ── Helpers (tidak diubah) ────────────────────────────────────────────────────
 def preprocess_teks(teks: str) -> str:
     if not isinstance(teks, str) or teks.strip() == "":
         return ""
@@ -86,371 +86,513 @@ st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap');
 
-/* Base */
 html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
-
-/* Hide default streamlit header/footer */
 #MainMenu { visibility: hidden; }
-footer { visibility: hidden; }
-
-/* Sidebar */
-[data-testid="stSidebar"] {
-    background: #0D1B2A !important;
-    border-right: 1px solid #1B2B3B;
+footer    { visibility: hidden; }
+            
+/* sembunyiin nav button duplikat di sidebar */
+[data-testid="stSidebar"] [data-testid="stButton"] button {
+    position: absolute !important;
+    opacity: 0 !important;
+    height: 100% !important;
+    width: 100% !important;
+    top: 0 !important;
+    left: 0 !important;
+    cursor: pointer !important;
+    z-index: 10 !important;
 }
-[data-testid="stSidebar"] * { color: #CBD5E1 !important; }
+[data-testid="stSidebar"] [data-testid="stButton"] {
+    position: relative !important;
+    margin-top: -44px !important;
+    height: 44px !important;
+}
+
+/* ── Layout background ── */
+.stApp { background: #060e1a; }
+.block-container { max-width: 740px !important; padding: 2rem 1.5rem; }
+
+/* ── Sidebar ── */
+[data-testid="stSidebar"] {
+    background: #0a1525 !important;
+    border-right: 1px solid #0d2240;
+}
+[data-testid="stSidebar"] * { color: #8aaccc !important; }
 [data-testid="stSidebar"] h1,
 [data-testid="stSidebar"] h2,
 [data-testid="stSidebar"] h3 {
-    color: #F1F5F9 !important;
+    color: #c8dff0 !important;
     font-family: 'Space Grotesk', sans-serif !important;
 }
-[data-testid="stSidebar"] .stRadio label { color: #94A3B8 !important; }
-[data-testid="stSidebar"] hr { border-color: #1B2B3B !important; }
 
-/* Main background */
-.stApp { background: #F8FAFC; }
-
-/* Page header */
-.page-header {
-    background: linear-gradient(135deg, #0D1B2A 0%, #1B3A5C 100%);
-    border-radius: 16px;
-    padding: 2.5rem 2rem;
-    margin-bottom: 2rem;
-    position: relative;
-    overflow: hidden;
+/* ── Hero header ── */
+.gj-header {
+    text-align: center;
+    padding: 2.5rem 1rem 2rem;
+    margin-bottom: 0.5rem;
 }
-.page-header::before {
-    content: "👻";
-    position: absolute;
-    right: 2rem;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 5rem;
-    opacity: 0.12;
-}
-.page-header h1 {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 2rem;
-    font-weight: 700;
-    color: #F1F5F9;
-    margin: 0 0 0.4rem 0;
-    letter-spacing: -0.5px;
-}
-.page-header p {
-    color: #94A3B8;
-    font-size: 0.95rem;
-    margin: 0;
-}
-.badge {
-    display: inline-block;
-    background: rgba(45,156,219,0.2);
-    border: 1px solid rgba(45,156,219,0.4);
-    color: #2D9CDB;
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 0.2rem 0.6rem;
-    border-radius: 20px;
+.gj-logo-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
     margin-bottom: 0.75rem;
 }
-
-/* Section cards */
-.section-card {
-    background: white;
-    border: 1px solid #E2E8F0;
+.gj-logo-box {
+    width: 44px; height: 44px;
+    background: #0c2444;
+    border: 1px solid #1a4a8a;
     border-radius: 12px;
-    padding: 1.5rem;
-    margin-bottom: 1.25rem;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
 }
-.section-title {
+.gj-title {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 0.8rem;
+    font-size: 26px;
+    font-weight: 700;
+    color: #e4f0ff;
+    letter-spacing: -0.5px;
+}
+.gj-title span { color: #378ADD; }
+.gj-sub {
+    font-size: 14px;
+    color: #3a6a90;
+    margin-top: 0;
+}
+
+/* ── Step label ── */
+.step-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: #64748B;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    color: #378ADD;
+    margin: 1.5rem 0 0.6rem;
 }
-.section-title span {
+.step-num {
     width: 20px; height: 20px;
-    background: #0D1B2A;
-    color: white;
+    background: #0c2444;
+    border: 1px solid #1a4a8a;
     border-radius: 50%;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.65rem;
+    font-size: 10px;
+    color: #378ADD;
 }
 
-/* Result boxes */
-.result-fake {
-    background: linear-gradient(135deg, #FFF5F5 0%, #FED7D7 100%);
-    border: 2px solid #FC8181;
-    border-radius: 16px;
-    padding: 2rem;
-    text-align: center;
-    margin: 1.5rem 0;
-}
-.result-real {
-    background: linear-gradient(135deg, #F0FFF4 0%, #C6F6D5 100%);
-    border: 2px solid #68D391;
-    border-radius: 16px;
-    padding: 2rem;
-    text-align: center;
-    margin: 1.5rem 0;
-}
-.result-icon { font-size: 3rem; margin-bottom: 0.5rem; }
-.result-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-}
-.result-fake .result-title { color: #C53030; }
-.result-real .result-title { color: #276749; }
-.result-sub { font-size: 0.9rem; color: #4A5568; }
-
-/* Probability meter */
-.prob-meter {
-    background: #E2E8F0;
-    border-radius: 100px;
-    height: 8px;
-    margin: 1rem auto;
-    max-width: 300px;
-    overflow: hidden;
-}
-.prob-fill-fake {
-    height: 100%;
-    border-radius: 100px;
-    background: linear-gradient(90deg, #F6AD55, #FC8181, #E53E3E);
-    transition: width 0.6s ease;
-}
-.prob-fill-real {
-    height: 100%;
-    border-radius: 100px;
-    background: linear-gradient(90deg, #68D391, #38A169);
-    transition: width 0.6s ease;
+/* ── Input cards ── */
+.input-card {
+    background: #080f1e;
+    border: 1px solid #0d2240;
+    border-radius: 12px;
+    padding: 1.25rem 1.25rem 0.75rem;
+    margin-bottom: 0.75rem;
 }
 
-/* Red flags */
-.flag-box {
-    background: #FFF5F5;
-    border-left: 3px solid #FC8181;
-    border-radius: 0 8px 8px 0;
-    padding: 0.75rem 1rem;
-    margin: 0.4rem 0;
-    font-size: 0.875rem;
-    color: #742A2A;
+/* ── Streamlit inputs override ── */
+.stTextInput > div > div > input,
+.stTextArea  > div > div > textarea,
+.stSelectbox > div > div > div {
+    background: #040b14 !important;
+    border: 1px solid #0d2240 !important;
+    border-radius: 8px !important;
+    color: #b8d4ec !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 13px !important;
 }
-.safe-box {
-    background: #F0FFF4;
-    border-left: 3px solid #68D391;
-    border-radius: 0 8px 8px 0;
-    padding: 0.75rem 1rem;
-    margin: 0.4rem 0;
-    font-size: 0.875rem;
-    color: #22543D;
+.stTextInput > div > div > input:focus,
+.stTextArea  > div > div > textarea:focus {
+    border-color: #185FA5 !important;
+    box-shadow: 0 0 0 2px rgba(24,95,165,0.15) !important;
+}
+label[data-testid="stWidgetLabel"] p {
+    color: #4a7fa8 !important;
+    font-size: 13px !important;
 }
 
-/* Analyze button */
+/* ── Checkbox ── */
+.stCheckbox label p { color: #7aaccc !important; font-size: 14px !important; }
+
+/* ── Analyze button ── */
 div[data-testid="stButton"] > button {
-    background: linear-gradient(135deg, #0D1B2A, #1B3A5C) !important;
-    color: white !important;
+    background: #185FA5 !important;
+    color: #e4f0ff !important;
     border: none !important;
     border-radius: 10px !important;
     font-family: 'Space Grotesk', sans-serif !important;
     font-weight: 600 !important;
-    font-size: 1rem !important;
+    font-size: 15px !important;
     padding: 0.75rem 2rem !important;
     width: 100% !important;
     letter-spacing: 0.02em !important;
-    transition: opacity 0.2s !important;
+    transition: background 0.2s !important;
 }
 div[data-testid="stButton"] > button:hover {
-    opacity: 0.88 !important;
+    background: #1e6ebc !important;
 }
 
-/* Sidebar guide steps */
-.guide-step {
-    background: rgba(45,156,219,0.08);
-    border: 1px solid rgba(45,156,219,0.2);
-    border-radius: 8px;
-    padding: 0.75rem 1rem;
-    margin-bottom: 0.6rem;
+/* ── Result card ── */
+.result-wrap {
+    border-radius: 14px;
+    overflow: hidden;
+    margin: 1.5rem 0 0.75rem;
+    border: 1px solid #0d2240;
 }
-.guide-step-num {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: #2D9CDB !important;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-}
-.guide-step-text {
-    font-size: 0.85rem;
-    color: #CBD5E1 !important;
-    margin-top: 0.2rem;
-}
-
-/* Redflag indicators */
-.indicator-row {
+.result-top-fake {
+    background: #120508;
+    border-left: 4px solid #E24B4A;
+    padding: 1.25rem 1.5rem;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.4rem 0;
-    font-size: 0.85rem;
-    color: #4A5568;
-    border-bottom: 1px solid #F1F5F9;
+    gap: 14px;
 }
-.dot-red { width:8px; height:8px; background:#FC8181; border-radius:50%; flex-shrink:0; }
-.dot-green { width:8px; height:8px; background:#68D391; border-radius:50%; flex-shrink:0; }
+.result-top-real {
+    background: #050f07;
+    border-left: 4px solid #4a9922;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+.result-verdict {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+.result-verdict-fake { color: #e07070; }
+.result-verdict-real { color: #70c070; }
+.result-pct-fake { font-size: 13px; color: #a84040; }
+.result-pct-real { font-size: 13px; color: #3a8a3a; }
+.bar-outer {
+    height: 5px;
+    background: #0d2240;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 8px;
+    max-width: 260px;
+}
+.bar-fake { height: 100%; background: #E24B4A; border-radius: 3px; }
+.bar-real { height: 100%; background: #4a9922; border-radius: 3px; }
+.result-body {
+    background: #060e1a;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid #0d2240;
+}
+.flag-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 6px 0;
+    font-size: 13px;
+    color: #b05050;
+    border-bottom: 1px solid #0d1828;
+}
+.safe-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 6px 0;
+    font-size: 13px;
+    color: #5a9a5a;
+    border-bottom: 1px solid #0d1828;
+}
+.flag-item i { color: #E24B4A; flex-shrink: 0; }
+.safe-item i { color: #4a9922; flex-shrink: 0; }
+.result-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 0.75rem 1.5rem;
+    background: #060e1a;
+    border-top: 1px solid #0d2240;
+}
+.meta-chip {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: #0a1828;
+    color: #3a6a90;
+    border: 1px solid #0d2240;
+}
 
-/* Input styling */
-.stTextInput > div > div > input,
-.stTextArea > div > div > textarea {
-    border-radius: 8px !important;
-    border: 1.5px solid #E2E8F0 !important;
-    font-family: 'Inter', sans-serif !important;
-    font-size: 0.9rem !important;
-}
-.stTextInput > div > div > input:focus,
-.stTextArea > div > div > textarea:focus {
-    border-color: #2D9CDB !important;
-    box-shadow: 0 0 0 3px rgba(45,156,219,0.1) !important;
-}
-
-/* Disclaimer */
+/* ── Disclaimer ── */
 .disclaimer {
-    background: #FFFBEB;
-    border: 1px solid #F6E05E;
+    background: #100e04;
+    border: 1px solid #2a2210;
     border-radius: 8px;
     padding: 0.75rem 1rem;
-    font-size: 0.8rem;
-    color: #744210;
-    margin-top: 1rem;
+    font-size: 12px;
+    color: #7a6a30;
+    margin-top: 0.75rem;
 }
+
+/* ── Sidebar nav indicator ── */
+.sidebar-flag {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 0;
+    font-size: 12px;
+    color: #6a9abb !important;
+    border-bottom: 1px solid #0d2240;
+}
+.dot-r { width:7px; height:7px; background:#c04040; border-radius:50%; flex-shrink:0; }
+.dot-g { width:7px; height:7px; background:#408840; border-radius:50%; flex-shrink:0; }
+
+/* ── About page ── */
+.about-card {
+    background: #080f1e;
+    border: 1px solid #0d2240;
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+}
+.about-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 13px;
+    border-bottom: 1px solid #0d1828;
+}
+.about-label { color: #3a6a90; }
+.about-val   { color: #9abcda; font-weight: 500; }
+.member-row  {
+    padding: 8px 0;
+    border-bottom: 1px solid #0d1828;
+}
+.member-name { font-size: 13px; font-weight: 600; color: #9abcda; }
+.member-sub  { font-size: 11px; color: #3a6a90; }
 </style>
 """, unsafe_allow_html=True)
 
 # ── Sidebar ───────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown("""
-    <div style="padding: 0.5rem 0 1.5rem 0;">
-        <div style="font-family:'Space Grotesk',sans-serif; font-size:1.3rem; font-weight:700; color:#F1F5F9;">
-            👻 GhostJobs
+    <style>
+    [data-testid="stSidebar"] section[data-testid="stSidebarContent"] {
+        padding: 0 !important;
+    }
+    [data-testid="stSidebar"] .stRadio > div {
+        gap: 4px !important;
+    }
+    [data-testid="stSidebar"] .stRadio label {
+        background: transparent !important;
+        border: none !important;
+        border-radius: 10px !important;
+        display: flex !important;
+        align-items: center !important;
+        padding: 10px 12px !important;
+        width: 100%;
+        transition: background 0.15s;
+        cursor: pointer;
+    }
+    [data-testid="stSidebar"] .stRadio label:hover {
+        background: #0c1d31 !important;
+    }
+    [data-testid="stSidebar"] .stRadio label[data-checked="true"] {
+        background: rgba(24,95,165,0.18) !important;
+    }
+    [data-testid="stSidebar"] .stRadio p {
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        color: #d9ebff !important;
+        margin: 0 !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # ── Brand ──────────────────────────────────────────────────
+    st.markdown("""
+    <div style="padding: 20px 16px 14px;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+            <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="38" height="38" rx="10" fill="#0a1e36"/>
+                <rect x="0.5" y="0.5" width="37" height="37" rx="9.5" stroke="#1a4a8a" stroke-opacity="0.8"/>
+                <path d="M19 7L9 11V19C9 24.5 13.5 29.5 19 31C24.5 29.5 29 24.5 29 19V11L19 7Z"
+                      fill="#0c2d50" stroke="#1e5fa5" stroke-width="1.2"/>
+                <circle cx="17.5" cy="18" r="4" stroke="#378ADD" stroke-width="1.5" fill="none"/>
+                <line x1="20.5" y1="21" x2="23" y2="23.5" stroke="#378ADD" stroke-width="1.8" stroke-linecap="round"/>
+                <circle cx="16" cy="16.5" r="1" fill="#7ab8e8" opacity="0.5"/>
+            </svg>
+            <div>
+                <div style="font-family:'Space Grotesk',sans-serif; font-size:18px; font-weight:700; color:#ddeeff; letter-spacing:-0.3px; line-height:1.1;">
+                    Ghost<span style="color:#378ADD;">Jobs</span>
+                </div>
+                <div style="font-size:10px; color:#1e4a6a; letter-spacing:0.06em; text-transform:uppercase; margin-top:1px;">
+                    Fake Job Detector
+                </div>
+            </div>
         </div>
-        <div style="font-size:0.75rem; color:#64748B; margin-top:0.2rem;">Fake Job Detection System</div>
+        <div style="display:inline-flex; align-items:center; gap:6px; background:#061428; border:1px solid #0d2a4a; border-radius:20px; padding:4px 10px;">
+            <div style="width:6px;height:6px;background:#22c55e;border-radius:50%;"></div>
+            <span style="font-size:10px;color:#2a8a5a;letter-spacing:0.05em;">Model aktif</span>
+        </div>
+    </div>
+    <div style="height:1px;background:#0d2240;margin:0 16px 16px;"></div>
+    """, unsafe_allow_html=True)
+
+    # ── Nav label ──────────────────────────────────────────────
+    st.markdown("""
+    <div style="font-size:10px;font-weight:600;color:#1e4a6a;letter-spacing:0.12em;text-transform:uppercase;padding:0 16px;margin-bottom:4px;">
+        Navigasi
     </div>
     """, unsafe_allow_html=True)
 
-    page = st.radio("", ["🔍  Deteksi Lowongan", "📖  Panduan Penggunaan", "ℹ️  Tentang Sistem"], label_visibility="collapsed")
+    # ── Nav items dengan icon manual ───────────────────────────
+    NAV_ITEMS = ["Deteksi Lowongan", "Panduan", "Tentang Sistem"]
+    NAV_ICONS = {
+        "Deteksi Lowongan": """<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>""",
+        "Panduan":          """<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>""",
+        "Tentang Sistem":   """<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>""",
+    }
 
-    st.markdown("---")
+    if "current_page" not in st.session_state:
+        st.session_state.current_page = "Deteksi Lowongan"
 
+    for item in NAV_ITEMS:
+        is_active = st.session_state.current_page == item
+        active_bg    = "background:rgba(24,95,165,0.18); border:1px solid #1e3a5a;" if is_active else "background:transparent; border:1px solid transparent;"
+        icon_bg      = "background:#185FA5;" if is_active else "background:#0c1d31;"
+        icon_color   = "#ffffff" if is_active else "#3a6a90"
+        label_color  = "#e8edf3" if is_active else "#5a7a9a"
+        badge        = '<span style="margin-left:auto;background:#0e2a48;color:#378ADD;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:500;">Aktif</span>' if is_active else ""
+
+        icon_svg = NAV_ICONS[item].replace('stroke="currentColor"', f'stroke="{icon_color}"')
+
+        st.markdown(f"""
+        <div onclick="void(0)" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;{active_bg};margin:0 4px 3px;cursor:pointer;">
+            <div style="width:30px;height:30px;border-radius:8px;{icon_bg};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                {icon_svg}
+            </div>
+            <span style="font-size:13px;font-weight:{'500' if is_active else '400'};color:{label_color};">{item}</span>
+            {badge}
+        </div>
+        """, unsafe_allow_html=True)
+
+        if st.button(item, key=f"nav_{item}", use_container_width=True):
+            st.session_state.current_page = item
+            st.rerun()
+
+    page = st.session_state.current_page
+
+    # ── Divider + Indikator ────────────────────────────────────
     st.markdown("""
-    <div style="font-family:'Space Grotesk',sans-serif; font-size:0.7rem; font-weight:600; color:#475569; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:0.75rem;">
+    <div style="height:1px;background:#0d2240;margin:12px 16px;"></div>
+    <div style="font-size:10px;font-weight:600;color:#1e4a6a;letter-spacing:0.12em;text-transform:uppercase;padding:0 16px;margin-bottom:8px;">
         Indikator Lowongan Palsu
     </div>
     """, unsafe_allow_html=True)
 
     flags = [
-        ("Tidak ada info gaji yang jelas", True),
-        ("Bahasa terlalu memaksa / urgent", True),
-        ("Alamat email di deskripsi kerja", True),
-        ("Tidak ada logo perusahaan", True),
-        ("Banyak tanda seru (!!!)", True),
-        ("Ada profil perusahaan lengkap", False),
-        ("Ada pertanyaan skrining", False),
-        ("Informasi benefit jelas", False),
+        ("Gaji tidak realistis / tidak jelas", True),
+        ("Bahasa terlalu memaksa / urgent",    True),
+        ("Ada email di deskripsi",             True),
+        ("Tidak ada logo perusahaan",          True),
+        ("Banyak tanda seru !!!",              True),
+        ("Ada profil perusahaan lengkap",      False),
+        ("Ada pertanyaan skrining",            False),
+        ("Benefit tercantum jelas",            False),
     ]
     for text, is_red in flags:
-        dot = "dot-red" if is_red else "dot-green"
-        icon = "🚨" if is_red else "✅"
-        st.markdown(f'<div class="indicator-row"><span class="{dot}"></span>{icon} {text}</div>', unsafe_allow_html=True)
+        dot_color = "#c04040" if is_red else "#2ecc71"
+        text_color = "#b06060" if is_red else "#4a9a6a"
+        st.markdown(f"""
+        <div style="display:flex;align-items:center;gap:8px;padding:6px 16px;font-size:12px;color:{text_color};border-bottom:1px solid #0d1828;">
+            <div style="width:6px;height:6px;background:{dot_color};border-radius:50%;flex-shrink:0;"></div>
+            {text}
+        </div>
+        """, unsafe_allow_html=True)
 
-    st.markdown("---")
+    # ── Footer ─────────────────────────────────────────────────
     st.markdown("""
-    <div style="font-size:0.75rem; color:#475569; text-align:center; padding-top:0.5rem;">
-        Tim PJK-GM088 · Capstone Pijak 2026<br>
-        <span style="color:#334155;">Random Forest · TF-IDF + Numerik</span>
+    <div style="height:1px;background:#0d2240;margin:12px 16px;"></div>
+    <div style="text-align:center;padding:0 16px 20px;">
+        <div style="font-size:10px;color:#1a3a5a;">Tim PJK-GM088</div>
+        <div style="font-size:10px;color:#102030;margin-top:2px;">Capstone Pijak × IBM SkillsBuild 2026</div>
     </div>
     """, unsafe_allow_html=True)
-
-# ── Pages ─────────────────────────────────────────────────────────────────────
 
 # ══════════════════════════════════════════════════════════════
-# PAGE 1: DETEKSI
+# PAGE 1 — DETEKSI
 # ══════════════════════════════════════════════════════════════
-if "Deteksi" in page:
+if page == "Deteksi Lowongan":
 
     st.markdown("""
-    <div class="page-header">
-        <div class="badge">Machine Learning · Random Forest</div>
-        <h1>Deteksi Lowongan Kerja Palsu</h1>
-        <p>Masukkan detail lowongan kerja yang ingin kamu periksa. Semakin lengkap data yang diisi, semakin akurat hasil analisisnya.</p>
+    <div class="gj-header">
+        <div class="gj-logo-wrap">
+            <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="46" height="46" rx="12" fill="#0a1e36"/>
+                <rect x="0.5" y="0.5" width="45" height="45" rx="11.5" stroke="#1a4a8a" stroke-opacity="0.9"/>
+                <path d="M23 8L10 13V22C10 29 15.5 35.5 23 37.5C30.5 35.5 36 29 36 22V13L23 8Z"
+                      fill="#0c2d50" stroke="#1e5fa5" stroke-width="1.3"/>
+                <circle cx="21" cy="22" r="5" stroke="#378ADD" stroke-width="1.8" fill="none"/>
+                <line x1="24.8" y1="25.8" x2="28" y2="29" stroke="#378ADD" stroke-width="2.2" stroke-linecap="round"/>
+                <circle cx="19.5" cy="20" r="1.2" fill="#7ab8e8" opacity="0.6"/>
+            </svg>
+            <div class="gj-title">Ghost<span>Jobs</span></div>
+        </div>
+        <div class="gj-sub">Deteksi lowongan kerja palsu berbasis AI — akurat &amp; transparan</div>
     </div>
     """, unsafe_allow_html=True)
 
-    # ── Section 1: Info Dasar ──────────────────────────────────
-    st.markdown("""
-    <div class="section-card">
-        <div class="section-title"><span>1</span> Informasi Dasar Lowongan</div>
-    </div>
-    """, unsafe_allow_html=True)
+    # ── Step 1: Konten Utama (wajib) ──────────────────────────
+    st.markdown('<div class="step-label"><span class="step-num">1</span> Konten lowongan <span style="color:#1a4a6a;font-size:10px;">(wajib diisi)</span></div>', unsafe_allow_html=True)
 
-    with st.container():
-        col1, col2 = st.columns(2)
-        with col1:
-            title      = st.text_input("Judul Posisi", placeholder="e.g. Data Analyst, Software Engineer")
-            location   = st.text_input("Lokasi", placeholder="e.g. Jakarta, Indonesia / Remote")
-            department = st.text_input("Departemen", placeholder="e.g. Engineering, Marketing")
-            industry   = st.text_input("Industri", placeholder="e.g. Technology, Finance")
-        with col2:
-            employment_type     = st.text_input("Tipe Pekerjaan", placeholder="e.g. Full-time, Part-time, Contract")
-            required_experience = st.text_input("Level Pengalaman", placeholder="e.g. Entry Level, Mid-Senior")
-            required_education  = st.text_input("Pendidikan", placeholder="e.g. Bachelor's Degree, S1")
-            function_field      = st.text_input("Fungsi Pekerjaan", placeholder="e.g. Engineering, Sales")
+    description = st.text_area(
+        "Deskripsi pekerjaan",
+        height=150,
+        placeholder="Salin deskripsi lengkap lowongan di sini — tanggung jawab, tugas, ekspektasi..."
+    )
+    requirements = st.text_area(
+        "Persyaratan & kualifikasi",
+        height=100,
+        placeholder="Skill, pengalaman, sertifikasi, pendidikan yang dibutuhkan..."
+    )
 
-    # ── Section 2: Konten ──────────────────────────────────────
-    st.markdown("""
-    <div class="section-card" style="margin-top:0.5rem;">
-        <div class="section-title"><span>2</span> Konten Lowongan</div>
-    </div>
-    """, unsafe_allow_html=True)
+    # ── Step 2: Atribut Cepat ──────────────────────────────────
+    st.markdown('<div class="step-label"><span class="step-num">2</span> Atribut lowongan</div>', unsafe_allow_html=True)
 
-    company_profile = st.text_area("Profil Perusahaan",     height=100, placeholder="Ceritakan tentang perusahaan, visi misi, budaya kerja, dsb...")
-    description     = st.text_area("Deskripsi Pekerjaan ✱", height=160, placeholder="Tulis deskripsi lengkap pekerjaan, tanggung jawab, dan ekspektasi...")
-    requirements    = st.text_area("Persyaratan & Kualifikasi", height=120, placeholder="Skill, pengalaman, sertifikasi yang dibutuhkan...")
-    benefits        = st.text_area("Benefit & Tunjangan",    height=80,  placeholder="Gaji, asuransi, THR, bonus, fasilitas lainnya...")
-
-    # ── Section 3: Atribut ─────────────────────────────────────
-    st.markdown("""
-    <div class="section-card" style="margin-top:0.5rem;">
-        <div class="section-title"><span>3</span> Atribut Tambahan</div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    col3, col4, col5 = st.columns(3)
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        telecommuting    = st.checkbox("Posisi Remote / WFH")
+    with col2:
+        has_company_logo = st.checkbox("Ada logo perusahaan")
     with col3:
-        telecommuting    = st.checkbox("🏠 Posisi Remote / WFH")
-    with col4:
-        has_company_logo = st.checkbox("🏢 Memiliki Logo Perusahaan")
-    with col5:
-        has_questions    = st.checkbox("📋 Ada Pertanyaan Skrining")
+        has_questions    = st.checkbox("Ada pertanyaan skrining")
+
+    # ── Step 3: Info Tambahan (opsional, collapsible) ──────────
+    st.markdown('<div class="step-label"><span class="step-num">3</span> Info tambahan <span style="color:#1a4a6a;font-size:10px;">(opsional, makin lengkap makin akurat)</span></div>', unsafe_allow_html=True)
+
+    with st.expander("Isi info tambahan opsional"):
+        col_a, col_b = st.columns(2)
+        with col_a:
+            title               = st.text_input("Judul posisi",        placeholder="e.g. Data Analyst")
+            employment_type     = st.text_input("Tipe pekerjaan",      placeholder="e.g. Full-time, Part-time")
+            required_experience = st.text_input("Level pengalaman",    placeholder="e.g. Entry Level, Mid-Senior")
+            industry            = st.text_input("Industri",            placeholder="e.g. Technology, Finance")
+        with col_b:
+            location            = st.text_input("Lokasi",              placeholder="e.g. Jakarta / Remote")
+            department          = st.text_input("Departemen",          placeholder="e.g. Engineering, Marketing")
+            required_education  = st.text_input("Pendidikan",          placeholder="e.g. S1, Bachelor's Degree")
+            function_field      = st.text_input("Fungsi pekerjaan",    placeholder="e.g. Engineering, Sales")
+
+        company_profile = st.text_area("Profil perusahaan", height=80,
+                                       placeholder="Visi misi, budaya kerja, deskripsi singkat perusahaan...")
+        benefits        = st.text_area("Benefit & tunjangan", height=70,
+                                       placeholder="Gaji, asuransi, THR, fasilitas lainnya...")
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # ── Analyze Button ─────────────────────────────────────────
-    if st.button("🔍 Analisis Lowongan Sekarang"):
+    # ── Tombol Deteksi ─────────────────────────────────────────
+    if st.button("Analisis Lowongan Sekarang"):
         if not description.strip():
-            st.warning("⚠️ Mohon isi minimal kolom **Deskripsi Pekerjaan** untuk memulai analisis.")
+            st.warning("Isi minimal kolom **Deskripsi Pekerjaan** untuk memulai analisis.")
         else:
-            with st.spinner("Sedang menganalisis lowongan..."):
+            with st.spinner("Sedang menganalisis..."):
                 data = {
                     "title": title, "location": location, "department": department,
                     "company_profile": company_profile, "description": description,
@@ -467,258 +609,262 @@ if "Deteksi" in page:
 
             prob_pct = prob * 100
 
+            # ── Hasil FAKE ─────────────────────────────────────
             if label == 1:
                 st.markdown(f"""
-                <div class="result-fake">
-                    <div class="result-icon">🚨</div>
-                    <div class="result-title">Lowongan Terindikasi PALSU</div>
-                    <div class="result-sub">Probabilitas penipuan: <strong>{prob_pct:.1f}%</strong></div>
-                    <div class="prob-meter"><div class="prob-fill-fake" style="width:{min(prob_pct,100):.1f}%"></div></div>
-                    <div style="font-size:0.8rem; color:#9B2C2C; margin-top:0.5rem;">Threshold deteksi: {THRESHOLD*100:.1f}%</div>
-                </div>
+                <div class="result-wrap">
+                    <div class="result-top-fake">
+                        <div style="font-size:32px;">🚨</div>
+                        <div style="flex:1;">
+                            <div class="result-verdict result-verdict-fake">Lowongan terindikasi PALSU</div>
+                            <div class="result-pct-fake">Probabilitas penipuan: <strong>{prob_pct:.1f}%</strong> &nbsp;·&nbsp; Threshold: {THRESHOLD*100:.1f}%</div>
+                            <div class="bar-outer"><div class="bar-fake" style="width:{min(prob_pct,100):.1f}%"></div></div>
+                        </div>
+                    </div>
                 """, unsafe_allow_html=True)
 
-                st.error("**Hati-hati!** Model mendeteksi pola yang sering ditemukan pada lowongan tidak asli. Lakukan verifikasi lebih lanjut sebelum memberikan data pribadi atau membayar biaya apapun.")
-
-                # Analisis red flags
                 red_flags = []
-                if not has_company_logo: red_flags.append("Tidak ada logo perusahaan")
-                if not has_questions:    red_flags.append("Tidak ada pertanyaan skrining")
-                if not benefits.strip(): red_flags.append("Informasi benefit tidak diisi")
-                if not company_profile.strip(): red_flags.append("Tidak ada profil perusahaan")
+                if not has_company_logo:
+                    red_flags.append("Tidak ada logo perusahaan")
+                if not has_questions:
+                    red_flags.append("Tidak ada pertanyaan skrining")
+                if not benefits.strip():
+                    red_flags.append("Informasi benefit tidak diisi")
+                if not company_profile.strip():
+                    red_flags.append("Tidak ada profil perusahaan")
                 desc_lower = description.lower()
                 if re.search(r'urgent|immediately|apply now|limited slots|hurry|fast cash', desc_lower):
-                    red_flags.append("Deskripsi mengandung kata-kata memaksa/urgent")
+                    red_flags.append("Deskripsi mengandung kata-kata memaksa / urgent")
                 if re.search(r'[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}', description):
                     red_flags.append("Deskripsi mengandung alamat email langsung")
                 if description.count("!") > 3:
                     red_flags.append(f"Terlalu banyak tanda seru ({description.count('!')} kali)")
 
                 if red_flags:
-                    st.markdown("**Faktor yang mempengaruhi hasil:**")
-                    for flag in red_flags:
-                        st.markdown(f'<div class="flag-box">🚩 {flag}</div>', unsafe_allow_html=True)
+                    flags_html = "".join([
+                        f'<div class="flag-item">⚠ {f}</div>' for f in red_flags
+                    ])
+                    st.markdown(f"""
+                    <div class="result-body">
+                        <div style="font-size:11px;color:#5a3030;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Indikator yang terdeteksi</div>
+                        {flags_html}
+                    </div>
+                    """, unsafe_allow_html=True)
 
-            else:
                 st.markdown(f"""
-                <div class="result-real">
-                    <div class="result-icon">✅</div>
-                    <div class="result-title">Lowongan Terindikasi ASLI</div>
-                    <div class="result-sub">Probabilitas penipuan: <strong>{prob_pct:.1f}%</strong></div>
-                    <div class="prob-meter"><div class="prob-fill-real" style="width:{100-prob_pct:.1f}%"></div></div>
-                    <div style="font-size:0.8rem; color:#276749; margin-top:0.5rem;">Threshold deteksi: {THRESHOLD*100:.1f}%</div>
+                    <div class="result-meta">
+                        <span class="meta-chip">Random Forest</span>
+                        <span class="meta-chip">TF-IDF + Numerik</span>
+                    </div>
                 </div>
                 """, unsafe_allow_html=True)
 
-                st.success("Lowongan ini tampak **legitim** berdasarkan analisis model. Tetap lakukan verifikasi mandiri sebelum memberikan data sensitif.")
+            # ── Hasil REAL ─────────────────────────────────────
+            else:
+                st.markdown(f"""
+                <div class="result-wrap">
+                    <div class="result-top-real">
+                        <div style="font-size:32px;">✅</div>
+                        <div style="flex:1;">
+                            <div class="result-verdict result-verdict-real">Lowongan terindikasi ASLI</div>
+                            <div class="result-pct-real">Probabilitas penipuan: <strong>{prob_pct:.1f}%</strong> &nbsp;·&nbsp; Threshold: {THRESHOLD*100:.1f}%</div>
+                            <div class="bar-outer"><div class="bar-real" style="width:{100-prob_pct:.1f}%"></div></div>
+                        </div>
+                    </div>
+                """, unsafe_allow_html=True)
 
                 safe_signals = []
-                if has_company_logo: safe_signals.append("Memiliki logo perusahaan")
-                if has_questions:    safe_signals.append("Ada pertanyaan skrining yang terstruktur")
-                if benefits.strip(): safe_signals.append("Informasi benefit tersedia")
+                if has_company_logo:        safe_signals.append("Memiliki logo perusahaan")
+                if has_questions:           safe_signals.append("Ada pertanyaan skrining yang terstruktur")
+                if benefits.strip():        safe_signals.append("Informasi benefit tersedia")
                 if company_profile.strip(): safe_signals.append("Profil perusahaan dicantumkan")
 
                 if safe_signals:
-                    st.markdown("**Sinyal positif yang ditemukan:**")
-                    for signal in safe_signals:
-                        st.markdown(f'<div class="safe-box">✅ {signal}</div>', unsafe_allow_html=True)
+                    sigs_html = "".join([
+                        f'<div class="safe-item">✔ {s}</div>' for s in safe_signals
+                    ])
+                    st.markdown(f"""
+                    <div class="result-body">
+                        <div style="font-size:11px;color:#2a5a2a;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Sinyal positif ditemukan</div>
+                        {sigs_html}
+                    </div>
+                    """, unsafe_allow_html=True)
 
-            with st.expander("📊 Detail Teknis Analisis"):
-                c1, c2, c3 = st.columns(3)
-                c1.metric("Model", "Random Forest Tuned")
-                c2.metric("Probabilitas Penipuan", f"{prob_pct:.2f}%")
-                c3.metric("Threshold Optimal", f"{THRESHOLD*100:.2f}%")
                 st.markdown(f"""
-                - Fitur teks diproses menggunakan **TF-IDF Vectorizer** ({len(KOLOM_TEKS)} kolom teks)
-                - Fitur numerik: {len(KOLOM_NUMERIK)} fitur (panjang teks, deteksi email, kata urgent, dsb)
-                - Hasil ini bersifat **prediktif** — bukan keputusan final
-                """)
+                    <div class="result-meta">
+                        <span class="meta-chip">Random Forest</span>
+                        <span class="meta-chip">TF-IDF + Numerik</span>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+
+            # ── Detail teknis ──────────────────────────────────
+            with st.expander("Detail teknis analisis"):
+                c1, c2, c3 = st.columns(3)
+                c1.metric("Model", "Random Forest")
+                c2.metric("Probabilitas", f"{prob_pct:.2f}%")
+                c3.metric("Threshold", f"{THRESHOLD*100:.2f}%")
+                st.caption(f"Fitur teks: TF-IDF ({len(KOLOM_TEKS)} kolom) · Fitur numerik: {len(KOLOM_NUMERIK)} fitur")
 
             st.markdown("""
             <div class="disclaimer">
-                ⚠️ <strong>Disclaimer:</strong> Hasil analisis ini dihasilkan oleh model machine learning dan tidak menjamin kebenaran 100%. 
-                Selalu lakukan verifikasi mandiri melalui situs resmi perusahaan sebelum melamar.
+                ⚠ Hasil ini dihasilkan oleh model ML dan tidak menjamin kebenaran 100%.
+                Selalu verifikasi mandiri melalui situs resmi perusahaan sebelum melamar.
             </div>
             """, unsafe_allow_html=True)
 
+
 # ══════════════════════════════════════════════════════════════
-# PAGE 2: PANDUAN
+# PAGE 2 — PANDUAN
 # ══════════════════════════════════════════════════════════════
-elif "Panduan" in page:
+elif page == "Panduan":
 
     st.markdown("""
-    <div class="page-header">
-        <div class="badge">Dokumentasi</div>
-        <h1>Panduan Penggunaan</h1>
-        <p>Pelajari cara menggunakan GhostJobs Detector dengan efektif untuk melindungi diri dari lowongan kerja palsu.</p>
+    <div class="gj-header">
+        <div class="gj-title">Panduan <span>Penggunaan</span></div>
+        <div class="gj-sub">Cara menggunakan GhostJobs Detector dengan efektif</div>
     </div>
     """, unsafe_allow_html=True)
-
-    st.markdown("""
-    <div class="section-card">
-        <div class="section-title">Apa itu GhostJobs Detector?</div>
-        <p style="color:#4A5568; font-size:0.95rem; line-height:1.7;">
-        GhostJobs Detector adalah sistem berbasis <strong>Machine Learning</strong> yang dirancang untuk membantu pencari kerja 
-        mengidentifikasi apakah sebuah lowongan kerja berpotensi palsu atau tidak. Sistem ini menganalisis teks dan atribut 
-        lowongan menggunakan model <strong>Random Forest</strong> yang telah dilatih pada ribuan data lowongan nyata dan palsu.
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown("### 📋 Langkah-langkah Penggunaan")
 
     steps = [
-        ("1", "Buka halaman Deteksi", "Klik menu '🔍 Deteksi Lowongan' di sidebar kiri untuk membuka form analisis."),
-        ("2", "Isi Informasi Dasar", "Masukkan judul posisi, lokasi, departemen, industri, tipe pekerjaan, level pengalaman, dan pendidikan yang dibutuhkan."),
-        ("3", "Salin Konten Lowongan", "Salin dan tempel teks dari lowongan yang ingin diperiksa ke kolom Deskripsi Pekerjaan, Persyaratan, Benefit, dan Profil Perusahaan."),
-        ("4", "Centang Atribut", "Tandai apakah lowongan tersebut remote, memiliki logo perusahaan, atau memiliki pertanyaan skrining."),
-        ("5", "Klik Analisis", "Tekan tombol 'Analisis Lowongan Sekarang' dan tunggu beberapa detik untuk melihat hasil."),
-        ("6", "Baca Hasil dengan Bijak", "Perhatikan probabilitas dan faktor-faktor yang ditemukan. Gunakan sebagai acuan, bukan keputusan final."),
+        ("Buka halaman Deteksi", "Klik menu 'Deteksi Lowongan' di sidebar."),
+        ("Tempel deskripsi lowongan", "Salin teks deskripsi dan persyaratan dari lowongan yang ingin diperiksa, lalu tempel ke kolom yang tersedia."),
+        ("Tandai atribut", "Centang apakah lowongan remote, ada logo perusahaan, dan ada pertanyaan skrining."),
+        ("Isi info opsional (jika ada)", "Makin lengkap datanya, makin akurat hasilnya. Tapi tidak wajib."),
+        ("Klik Analisis", "Tekan tombol dan tunggu hasil — biasanya kurang dari 1 detik."),
+        ("Baca hasil dengan bijak", "Gunakan hasil sebagai acuan, bukan keputusan final. Tetap verifikasi mandiri."),
     ]
 
-    for num, title_step, desc_step in steps:
+    for i, (t, d) in enumerate(steps, 1):
         st.markdown(f"""
-        <div class="guide-step" style="background:white; border:1px solid #E2E8F0; border-radius:10px; padding:1rem 1.25rem; margin-bottom:0.75rem; display:flex; gap:1rem; align-items:flex-start;">
-            <div style="background:#0D1B2A; color:white; border-radius:50%; width:28px; height:28px; display:flex; align-items:center; justify-content:center; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:0.85rem; flex-shrink:0; margin-top:2px;">{num}</div>
+        <div style="display:flex;gap:12px;align-items:flex-start;background:#080f1e;border:1px solid #0d2240;border-radius:10px;padding:1rem 1.25rem;margin-bottom:0.6rem;">
+            <div style="width:24px;height:24px;background:#0c2444;border:1px solid #1a4a8a;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;color:#378ADD;flex-shrink:0;margin-top:2px;">{i}</div>
             <div>
-                <div style="font-family:'Space Grotesk',sans-serif; font-weight:600; color:#1A202C; margin-bottom:0.2rem;">{title_step}</div>
-                <div style="color:#64748B; font-size:0.875rem; line-height:1.6;">{desc_step}</div>
+                <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;color:#9abcda;margin-bottom:3px;">{t}</div>
+                <div style="font-size:13px;color:#3a6a90;line-height:1.6;">{d}</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
 
-    st.markdown("### 💡 Tips Mendapatkan Hasil Terbaik")
+    st.markdown("""
+    <div class="disclaimer" style="margin-top:1.25rem;">
+        ⚠ GhostJobs Detector adalah alat bantu, bukan pengganti penilaian manusia.
+        Jangan pernah membayar biaya atau memberikan data sensitif sebelum memverifikasi keaslian perusahaan.
+    </div>
+    """, unsafe_allow_html=True)
 
-    tips = [
-        ("✏️", "Isi selengkap mungkin", "Semakin banyak informasi yang dimasukkan, semakin akurat analisis model."),
-        ("📋", "Salin teks asli", "Salin langsung dari postingan lowongan tanpa mengubah teks agar analisis lebih akurat."),
-        ("🔄", "Gunakan sebagai referensi", "Gunakan hasil analisis sebagai salah satu pertimbangan, bukan satu-satunya acuan."),
-        ("🌐", "Verifikasi mandiri", "Cek situs resmi perusahaan dan LinkedIn mereka untuk konfirmasi lebih lanjut."),
+
+# ══════════════════════════════════════════════════════════════
+# PAGE 3 — TENTANG
+# ══════════════════════════════════════════════════════════════
+elif page == "Tentang Sistem":
+
+    st.markdown("""
+    <div class="gj-header">
+        <div class="gj-title">Tentang <span>Sistem</span></div>
+        <div class="gj-sub">Informasi teknis &amp; tim pengembang GhostJobs</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ── Baris 1: Pipeline + Spesifikasi ───────────────────────
+    st.markdown("""
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+        <div style="background:#080f1e;border:1px solid #0d2240;border-radius:12px;padding:0.65rem;">
+            <div style="font-size:13px;font-weight:600;color:#378ADD;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px;margin-top:8px;margin-left:12px;">Pipeline Model</div>
+    """, unsafe_allow_html=True)
+
+    pipeline = [
+        ("01", "Text Preprocessing",     "Bersihkan HTML/URL/email → tokenisasi → stopword removal → stemming"),
+        ("02", "Feature Engineering",    "TF-IDF (12 kolom teks) + 11 fitur numerik custom"),
+        ("03", "Class Imbalance",        "SMOTE (Synthetic Minority Oversampling)"),
+        ("04", "Model Training",         "Logistic Regression & Random Forest + RandomizedSearchCV"),
+        ("05", "Threshold Optimization", f"Optimal threshold: {THRESHOLD:.4f} (F1-Score)"),
+    ]
+    for num, pt, pd_ in pipeline:
+        st.markdown(f"""
+        <div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid #0d1828;align-items:flex-start;">
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;color:#185FA5;
+                        background:#0c1e34;border:1px solid #0d2a4a;border-radius:4px;
+                        padding:2px 5px;flex-shrink:0;margin-top:1px;letter-spacing:0.04em;">{num}</div>
+            <div>
+                <div style="font-weight:600;color:#7aaccc;font-size:13px;line-height:1.3;">{pt}</div>
+                <div style="color:#2a5a7a;font-size:11px;margin-top:2px;line-height:1.5;">{pd_}</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    # ── Spesifikasi ────────────────────────────────────────────
+    specs = [
+        ("Model",         "Random Forest Tuned"),
+        ("Tuning",        "RandomizedSearchCV"),
+        ("Fitur teks",    "12 kolom TF-IDF"),
+        ("Fitur numerik", "11 fitur custom"),
+        ("Imbalance",     "SMOTE"),
+        ("Threshold",     f"{THRESHOLD:.4f}"),
+        ("Dataset",       "fake_job_postings.csv"),
+        ("Sumber",        "Kaggle"),
     ]
 
-    col_a, col_b = st.columns(2)
-    for i, (icon, tip_title, tip_desc) in enumerate(tips):
-        col = col_a if i % 2 == 0 else col_b
-        with col:
-            st.markdown(f"""
-            <div style="background:white; border:1px solid #E2E8F0; border-radius:10px; padding:1.25rem; margin-bottom:0.75rem;">
-                <div style="font-size:1.5rem; margin-bottom:0.5rem;">{icon}</div>
-                <div style="font-family:'Space Grotesk',sans-serif; font-weight:600; color:#1A202C; margin-bottom:0.3rem;">{tip_title}</div>
-                <div style="color:#64748B; font-size:0.85rem; line-height:1.5;">{tip_desc}</div>
-            </div>
-            """, unsafe_allow_html=True)
-
     st.markdown("""
-    <div class="disclaimer" style="margin-top:1rem;">
-        ⚠️ <strong>Penting:</strong> GhostJobs Detector adalah alat bantu, bukan pengganti penilaian manusia. 
-        Jangan pernah memberikan data pribadi, membayar biaya apapun, atau memberikan akses akun sebelum 
-        memverifikasi keaslian perusahaan secara mandiri.
-    </div>
+        <div style="background:#080f1e;border:1px solid #0d2240;border-radius:12px;padding:0.65rem;">
+            <div style="font-size:13px;font-weight:600;color:#378ADD;letter-spacing:0.12em;
+                        text-transform:uppercase;margin-bottom:12px;margin-top:8px;margin-left:12px;">Spesifikasi</div>
     """, unsafe_allow_html=True)
 
-# ══════════════════════════════════════════════════════════════
-# PAGE 3: TENTANG
-# ══════════════════════════════════════════════════════════════
-elif "Tentang" in page:
-
-    st.markdown("""
-    <div class="page-header">
-        <div class="badge">Capstone Pijak 2026</div>
-        <h1>Tentang Sistem</h1>
-        <p>Informasi teknis dan latar belakang pengembangan GhostJobs Detector.</p>
-    </div>
-    """, unsafe_allow_html=True)
-
-    col_l, col_r = st.columns([3, 2])
-
-    with col_l:
-        st.markdown("""
-        <div class="section-card">
-            <div class="section-title">Latar Belakang</div>
-            <p style="color:#4A5568; font-size:0.9rem; line-height:1.8;">
-            Lowongan kerja palsu merupakan masalah yang semakin marak di era digital. 
-            Berdasarkan dataset <strong>fake_job_postings.csv</strong> dari Kaggle, sekitar 4.8% dari total 
-            lowongan yang beredar terindikasi palsu — sebuah angka yang kecil namun berdampak besar 
-            bagi para pencari kerja yang tidak waspada.
-            </p>
-            <p style="color:#4A5568; font-size:0.9rem; line-height:1.8;">
-            GhostJobs Detector dikembangkan sebagai solusi berbasis ML untuk membantu pengguna 
-            mengidentifikasi potensi penipuan sebelum melamar.
-            </p>
+    for lbl, val in specs:
+        st.markdown(f"""
+        <div style="display:flex;justify-content:space-between;align-items:center;
+                    padding:7px 0;border-bottom:1px solid #0d1828;font-size:12px;">
+            <span style="color:#2a5a7a;">{lbl}</span>
+            <span style="color:#7aaccc;font-weight:500;">{val}</span>
         </div>
         """, unsafe_allow_html=True)
 
-        st.markdown("""
-        <div class="section-card">
-            <div class="section-title">Pipeline Model</div>
+    st.markdown("</div></div>", unsafe_allow_html=True)
+
+    # ── Tim Pengembang ─────────────────────────────────────────
+    members = [
+        ("Dea Zasqia P. Malau", "APC322D6X0291", "Streamlit & Integrasi",       "DZ"),
+        ("Dian Nazira",         "APC322D6X0292", "EDA & Data Quality",           "DN"),
+        ("Adinda Muarriva",     "APC322D6X0294", "Preprocessing & Feature Eng.", "AM"),
+        ("Khairun Nisa",        "APC322D6X0409", "Model Training & Evaluasi",    "KN"),
+    ]
+
+    st.markdown("""
+    <div style="background:#080f1e;border:1px solid #0d2240;border-radius:12px;padding:0.75rem;margin-bottom:12px;">
+        <div style="font-size:13px;font-weight:600;color:#378ADD;letter-spacing:0.12em;
+                    text-transform:uppercase;margin-bottom:4px;margin-top:8px;margin-left:12px;">Tim Pengembang</div>
+        <div style="font-size:11px;color:#1a3a5a;margin-bottom:12px;margin-left:12px;">
+            PJK-GM088 · Capstone Pijak × IBM SkillsBuild 2026
+        </div>
+    """, unsafe_allow_html=True)
+
+    for name, cid, role, initials in members:
+        st.markdown(f"""
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #0d1828;">
+            <div style="width:36px;height:36px;border-radius:8px;
+                        background:#0c2444;border:1px solid #1a4a8a;
+                        display:flex;align-items:center;justify-content:center;
+                        font-family:'Space Grotesk',sans-serif;font-size:11px;
+                        font-weight:700;color:#378ADD;flex-shrink:0;">{initials}</div>
+            <div style="flex:1;min-width:0;">
+                <div style="font-weight:600;color:#9abcda;font-size:13px;">{name}</div>
+                <div style="font-size:11px;color:#2a5a7a;margin-top:1px;">{cid}</div>
+            </div>
+            <div style="font-size:11px;color:#185FA5;background:#061428;
+                        border:1px solid #0d2a4a;border-radius:20px;
+                        padding:3px 10px;white-space:nowrap;">{role}</div>
+        </div>
         """, unsafe_allow_html=True)
 
-        pipeline_steps = [
-            ("Text Preprocessing", "Pembersihan HTML, URL, email, angka → tokenisasi → stopword removal → stemming"),
-            ("Feature Engineering", "TF-IDF Vectorizer (12 kolom teks) + 11 fitur numerik custom"),
-            ("Class Imbalance", "SMOTE (Synthetic Minority Oversampling Technique)"),
-            ("Model Training", "Logistic Regression & Random Forest + RandomizedSearchCV tuning"),
-            ("Threshold Optimization", f"Optimal threshold: {THRESHOLD:.4f} (berdasarkan F1-Score)"),
-        ]
+    st.markdown("</div>", unsafe_allow_html=True)
 
-        for step_title, step_desc in pipeline_steps:
-            st.markdown(f"""
-            <div style="display:flex; gap:0.75rem; padding:0.6rem 0; border-bottom:1px solid #F1F5F9; align-items:flex-start;">
-                <div style="width:6px; height:6px; background:#2D9CDB; border-radius:50%; margin-top:7px; flex-shrink:0;"></div>
-                <div>
-                    <div style="font-weight:600; color:#1A202C; font-size:0.875rem;">{step_title}</div>
-                    <div style="color:#64748B; font-size:0.8rem;">{step_desc}</div>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
-
-        st.markdown("</div>", unsafe_allow_html=True)
-
-    with col_r:
-        st.markdown("""
-        <div class="section-card">
-            <div class="section-title">Spesifikasi Model</div>
-        """, unsafe_allow_html=True)
-
-        specs = [
-            ("Model Terpilih", "Random Forest Tuned"),
-            ("Metode Tuning", "RandomizedSearchCV"),
-            ("Fitur Teks", "12 kolom (TF-IDF)"),
-            ("Fitur Numerik", "11 fitur custom"),
-            ("Penanganan Imbalance", "SMOTE"),
-            ("Threshold Optimal", f"{THRESHOLD:.4f}"),
-            ("Dataset", "fake_job_postings.csv"),
-            ("Sumber Data", "Kaggle"),
-        ]
-
-        for label_s, value_s in specs:
-            st.markdown(f"""
-            <div style="display:flex; justify-content:space-between; padding:0.5rem 0; border-bottom:1px solid #F1F5F9; font-size:0.85rem;">
-                <span style="color:#64748B;">{label_s}</span>
-                <span style="font-weight:600; color:#1A202C;">{value_s}</span>
-            </div>
-            """, unsafe_allow_html=True)
-
-        st.markdown("</div>", unsafe_allow_html=True)
-
-        st.markdown("""
-        <div class="section-card" style="margin-top:0;">
-            <div class="section-title">Tim Pengembang</div>
-        """, unsafe_allow_html=True)
-
-        members = [
-            ("Dea Zasqia P. Malau", "APC322D6X0291", "Streamlit & Integrasi Model"),
-            ("Dian Nazira", "APC322D6X0292", "EDA & Data Quality"),
-            ("Adinda Muarriva", "APC322D6X0294", "Preprocessing & Feature Eng."),
-            ("Khairun Nisa", "APC322D6X0409", "Model Training & Evaluasi"),
-        ]
-
-        for name, cohort_id, role in members:
-            st.markdown(f"""
-            <div style="padding:0.6rem 0; border-bottom:1px solid #F1F5F9;">
-                <div style="font-weight:600; color:#1A202C; font-size:0.875rem;">{name}</div>
-                <div style="color:#64748B; font-size:0.75rem;">{cohort_id} · {role}</div>
-            </div>
-            """, unsafe_allow_html=True)
-
-        st.markdown("</div>", unsafe_allow_html=True)
+    # ── Disclaimer ─────────────────────────────────────────────
+    st.markdown("""
+    <div class="disclaimer">
+        ⚠ Sistem ini dikembangkan sebagai proyek capstone dan tidak dimaksudkan untuk penggunaan komersial.
+        Hasil deteksi bersifat indikatif — selalu verifikasi mandiri sebelum melamar pekerjaan.
+    </div>
+    """, unsafe_allow_html=True)
