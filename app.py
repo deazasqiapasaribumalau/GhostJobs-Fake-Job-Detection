@@ -110,19 +110,19 @@ footer    { visibility: hidden; }
 }
 
 /* ── Layout background ── */
-.stApp { background: #060e1a; }
+.stApp { background: #eff4fb; }
 .block-container { max-width: 740px !important; padding: 2rem 1.5rem; }
 
 /* ── Sidebar ── */
 [data-testid="stSidebar"] {
-    background: #0a1525 !important;
-    border-right: 1px solid #0d2240;
+    background: #ffffff !important;
+    border-right: 1px solid #d7e3ef;
 }
-[data-testid="stSidebar"] * { color: #8aaccc !important; }
+[data-testid="stSidebar"] * { color: #6b87a4 !important; }
 [data-testid="stSidebar"] h1,
 [data-testid="stSidebar"] h2,
 [data-testid="stSidebar"] h3 {
-    color: #c8dff0 !important;
+    color: #214968 !important;
     font-family: 'Space Grotesk', sans-serif !important;
 }
             
@@ -155,7 +155,7 @@ footer    { visibility: hidden; }
 .input-card:hover,
 .about-card:hover{
     transform: translateY(-2px);
-    border-color:#185FA5;
+    border-color:#3e7bb7;
 }
 
 /* efek muncul bertahap */
@@ -182,8 +182,8 @@ footer    { visibility: hidden; }
 }
 .gj-logo-box {
     width: 44px; height: 44px;
-    background: #0c2444;
-    border: 1px solid #1a4a8a;
+    background: #eaf1f9;
+    border: 1px solid #c0d2e5;
     border-radius: 12px;
     display: flex; align-items: center; justify-content: center;
     font-size: 22px;
@@ -192,13 +192,13 @@ footer    { visibility: hidden; }
     font-family: 'Space Grotesk', sans-serif;
     font-size: 26px;
     font-weight: 700;
-    color: #e4f0ff;
+    color: #214968;
     letter-spacing: -0.5px;
 }
-.gj-title span { color: #378ADD; }
+.gj-title span { color: #2d6faa; }
 .gj-sub {
     font-size: 14px;
-    color: #3a6a90;
+    color: #6f87a1;
     margin-top: 0;
 }
 
@@ -212,25 +212,25 @@ footer    { visibility: hidden; }
     font-weight: 600;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: #378ADD;
+    color: #2d6faa;
     margin: 1.5rem 0 0.6rem;
 }
 .step-num {
     width: 20px; height: 20px;
-    background: #0c2444;
-    border: 1px solid #1a4a8a;
+    background: #eaf1f9;
+    border: 1px solid #c0d2e5;
     border-radius: 50%;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     font-size: 10px;
-    color: #378ADD;
+    color: #2d6faa;
 }
 
 /* ── Input cards ── */
 .input-card {
-    background: #080f1e;
-    border: 1px solid #0d2240;
+    background: #ffffff;
+    border: 1px solid #d7e3ef;
     border-radius: 12px;
     padding: 1.25rem 1.25rem 0.75rem;
     margin-bottom: 0.75rem;
@@ -240,31 +240,31 @@ footer    { visibility: hidden; }
 .stTextInput > div > div > input,
 .stTextArea  > div > div > textarea,
 .stSelectbox > div > div > div {
-    background: #040b14 !important;
-    border: 1px solid #0d2240 !important;
+    background: #ffffff !important;
+    border: 1px solid #d7e3ef !important;
     border-radius: 8px !important;
-    color: #b8d4ec !important;
+    color: #214968 !important;
     font-family: 'Inter', sans-serif !important;
     font-size: 13px !important;
 }
 .stTextInput > div > div > input:focus,
 .stTextArea  > div > div > textarea:focus {
-    border-color: #185FA5 !important;
-    box-shadow: 0 0 0 2px rgba(24,95,165,0.15) !important;
+    border-color: #3e7bb7 !important;
+    box-shadow: 0 0 0 2px rgba(62,123,183,0.15) !important;
 }
 label[data-testid="stWidgetLabel"] p {
-    color: #4a7fa8 !important;
+    color: #6f87a1 !important;
     font-size: 13px !important;
 }
 
 /* ── Checkbox ── */
-.stCheckbox label p { color: #7aaccc !important; font-size: 14px !important; }
+.stCheckbox label p { color: #4f6f8b !important; font-size: 14px !important; }
 
 /* ── Analyze button ── */
 div[data-testid="stButton"] > button {
-    background: #185FA5 !important;
-    color: #e4f0ff !important;
-    border: none !important;
+    background: #eef4fb !important;
+    color: #214968 !important;
+    border: 1px solid #c7d7e6 !important;
     border-radius: 10px !important;
     font-family: 'Space Grotesk', sans-serif !important;
     font-weight: 600 !important;
@@ -272,10 +272,11 @@ div[data-testid="stButton"] > button {
     padding: 0.75rem 2rem !important;
     width: 100% !important;
     letter-spacing: 0.02em !important;
-    transition: background 0.2s !important;
+    transition: background 0.2s, border-color 0.2s !important;
 }
 div[data-testid="stButton"] > button:hover {
-    background: #1e6ebc !important;
+    background: #e4edf7 !important;
+    border-color: #9ebada !important;
 }
 
 /* ── Result card ── */
@@ -283,10 +284,10 @@ div[data-testid="stButton"] > button:hover {
     border-radius: 14px;
     overflow: hidden;
     margin: 1.5rem 0 0.75rem;
-    border: 1px solid #0d2240;
+    border: 1px solid #d7e3ef;
 }
 .result-top-fake {
-    background: #120508;
+    background: #fff3f3;
     border-left: 4px solid #E24B4A;
     padding: 1.25rem 1.5rem;
     display: flex;
@@ -294,7 +295,7 @@ div[data-testid="stButton"] > button:hover {
     gap: 14px;
 }
 .result-top-real {
-    background: #050f07;
+    background: #f3fbf4;
     border-left: 4px solid #4a9922;
     padding: 1.25rem 1.5rem;
     display: flex;
@@ -307,13 +308,13 @@ div[data-testid="stButton"] > button:hover {
     font-weight: 600;
     margin-bottom: 6px;
 }
-.result-verdict-fake { color: #e07070; }
-.result-verdict-real { color: #70c070; }
-.result-pct-fake { font-size: 13px; color: #a84040; }
-.result-pct-real { font-size: 13px; color: #3a8a3a; }
+.result-verdict-fake { color: #c94d4d; }
+.result-verdict-real { color: #368d4d; }
+.result-pct-fake { font-size: 13px; color: #9b4d4d; }
+.result-pct-real { font-size: 13px; color: #4a8b57; }
 .bar-outer {
     height: 5px;
-    background: #0d2240;
+    background: #d7e3ef;
     border-radius: 3px;
     overflow: hidden;
     margin-top: 8px;
@@ -322,9 +323,9 @@ div[data-testid="stButton"] > button:hover {
 .bar-fake { height: 100%; background: #E24B4A; border-radius: 3px; }
 .bar-real { height: 100%; background: #4a9922; border-radius: 3px; }
 .result-body {
-    background: #060e1a;
+    background: #ffffff;
     padding: 1rem 1.5rem;
-    border-top: 1px solid #0d2240;
+    border-top: 1px solid #d7e3ef;
 }
 .flag-item {
     display: flex;
@@ -332,8 +333,8 @@ div[data-testid="stButton"] > button:hover {
     gap: 8px;
     padding: 6px 0;
     font-size: 13px;
-    color: #b05050;
-    border-bottom: 1px solid #0d1828;
+    color: #b35757;
+    border-bottom: 1px solid #e6eef7;
 }
 .safe-item {
     display: flex;
@@ -341,8 +342,8 @@ div[data-testid="stButton"] > button:hover {
     gap: 8px;
     padding: 6px 0;
     font-size: 13px;
-    color: #5a9a5a;
-    border-bottom: 1px solid #0d1828;
+    color: #4e8f5a;
+    border-bottom: 1px solid #e6eef7;
 }
 .flag-item i { color: #E24B4A; flex-shrink: 0; }
 .safe-item i { color: #4a9922; flex-shrink: 0; }
@@ -351,26 +352,26 @@ div[data-testid="stButton"] > button:hover {
     gap: 8px;
     flex-wrap: wrap;
     padding: 0.75rem 1.5rem;
-    background: #060e1a;
-    border-top: 1px solid #0d2240;
+    background: #ffffff;
+    border-top: 1px solid #d7e3ef;
 }
 .meta-chip {
     font-size: 11px;
     padding: 3px 10px;
     border-radius: 20px;
-    background: #0a1828;
-    color: #3a6a90;
-    border: 1px solid #0d2240;
+    background: #eef4fb;
+    color: #6f87a1;
+    border: 1px solid #d7e3ef;
 }
 
 /* ── Disclaimer ── */
 .disclaimer {
-    background: #100e04;
-    border: 1px solid #2a2210;
+    background: #fff8e9;
+    border: 1px solid #f0dfb0;
     border-radius: 8px;
     padding: 0.75rem 1rem;
     font-size: 12px;
-    color: #7a6a30;
+    color: #8a7638;
     margin-top: 0.75rem;
 }
 
@@ -381,16 +382,16 @@ div[data-testid="stButton"] > button:hover {
     gap: 8px;
     padding: 5px 0;
     font-size: 12px;
-    color: #6a9abb !important;
-    border-bottom: 1px solid #0d2240;
+    color: #6f87a1 !important;
+    border-bottom: 1px solid #e6eef7;
 }
-.dot-r { width:7px; height:7px; background:#c04040; border-radius:50%; flex-shrink:0; }
-.dot-g { width:7px; height:7px; background:#408840; border-radius:50%; flex-shrink:0; }
+.dot-r { width:7px; height:7px; background:#d35d5d; border-radius:50%; flex-shrink:0; }
+.dot-g { width:7px; height:7px; background:#5ca66a; border-radius:50%; flex-shrink:0; }
 
 /* ── About page ── */
 .about-card {
-    background: #080f1e;
-    border: 1px solid #0d2240;
+    background: #ffffff;
+    border: 1px solid #d7e3ef;
     border-radius: 12px;
     padding: 1.25rem;
     margin-bottom: 1rem;
@@ -400,16 +401,16 @@ div[data-testid="stButton"] > button:hover {
     justify-content: space-between;
     padding: 6px 0;
     font-size: 13px;
-    border-bottom: 1px solid #0d1828;
+    border-bottom: 1px solid #e6eef7;
 }
-.about-label { color: #3a6a90; }
-.about-val   { color: #9abcda; font-weight: 500; }
+.about-label { color: #6f87a1; }
+.about-val   { color: #214968; font-weight: 500; }
 .member-row  {
     padding: 8px 0;
-    border-bottom: 1px solid #0d1828;
+    border-bottom: 1px solid #e6eef7;
 }
-.member-name { font-size: 13px; font-weight: 600; color: #9abcda; }
-.member-sub  { font-size: 11px; color: #3a6a90; }
+.member-name { font-size: 13px; font-weight: 600; color: #214968; }
+.member-sub  { font-size: 11px; color: #6f87a1; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -435,15 +436,15 @@ with st.sidebar:
         cursor: pointer;
     }
     [data-testid="stSidebar"] .stRadio label:hover {
-        background: #0c1d31 !important;
+        background: #eef4fb !important;
     }
     [data-testid="stSidebar"] .stRadio label[data-checked="true"] {
-        background: rgba(24,95,165,0.18) !important;
+        background: rgba(62,123,183,0.14) !important;
     }
     [data-testid="stSidebar"] .stRadio p {
         font-size: 13px !important;
-        font-weight: 500 !important;
-        color: #d9ebff !important;
+        font-weight: 600 !important;
+        color: #214968 !important;
         margin: 0 !important;
     }
     </style>
@@ -451,37 +452,37 @@ with st.sidebar:
 
     # ── Brand ──────────────────────────────────────────────────
     st.markdown("""
-    <div style="padding: 20px 16px 14px;">
-        <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+    <div style="padding: 14px 16px 10px;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
             <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="38" height="38" rx="10" fill="#0a1e36"/>
-                <rect x="0.5" y="0.5" width="37" height="37" rx="9.5" stroke="#1a4a8a" stroke-opacity="0.8"/>
+                <rect width="38" height="38" rx="10" fill="#eef4fb"/>
+                <rect x="0.5" y="0.5" width="37" height="37" rx="9.5" stroke="#c0d2e5" stroke-opacity="0.8"/>
                 <path d="M19 7L9 11V19C9 24.5 13.5 29.5 19 31C24.5 29.5 29 24.5 29 19V11L19 7Z"
-                      fill="#0c2d50" stroke="#1e5fa5" stroke-width="1.2"/>
-                <circle cx="17.5" cy="18" r="4" stroke="#378ADD" stroke-width="1.5" fill="none"/>
-                <line x1="20.5" y1="21" x2="23" y2="23.5" stroke="#378ADD" stroke-width="1.8" stroke-linecap="round"/>
-                <circle cx="16" cy="16.5" r="1" fill="#7ab8e8" opacity="0.5"/>
+                      fill="#dfeaf5" stroke="#5f90bf" stroke-width="1.2"/>
+                <circle cx="17.5" cy="18" r="4" stroke="#4f86ba" stroke-width="1.5" fill="none"/>
+                <line x1="20.5" y1="21" x2="23" y2="23.5" stroke="#4f86ba" stroke-width="1.8" stroke-linecap="round"/>
+                <circle cx="16" cy="16.5" r="1" fill="#9ec0de" opacity="0.8"/>
             </svg>
             <div>
-                <div style="font-family:'Space Grotesk',sans-serif; font-size:18px; font-weight:700; color:#ddeeff; letter-spacing:-0.3px; line-height:1.1;">
-                    Ghost<span style="color:#378ADD;">Jobs</span>
+                <div style="font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:800; color:#214968; letter-spacing:-0.5px; line-height:1.0; margin-top:-1px;">
+                    Ghost<span style="color:#2d6faa;">Jobs</span>
                 </div>
-                <div style="font-size:10px; color:#1e4a6a; letter-spacing:0.06em; text-transform:uppercase; margin-top:1px;">
+                <div style="font-size:10px; color:#6f87a1; letter-spacing:0.08em; text-transform:uppercase; margin-top:1px; font-weight:800;">
                     Fake Job Detector
                 </div>
             </div>
         </div>
-        <div style="display:inline-flex; align-items:center; gap:6px; background:#061428; border:1px solid #0d2a4a; border-radius:20px; padding:4px 10px;">
+        <div style="display:inline-flex; align-items:center; gap:6px; background:#eef4fb; border:1px solid #d7e3ef; border-radius:20px; padding:4px 10px; margin-top:2px;">
             <div style="width:6px;height:6px;background:#22c55e;border-radius:50%;"></div>
-            <span style="font-size:10px;color:#2a8a5a;letter-spacing:0.05em;">Model aktif</span>
+            <span style="font-size:10px;color:#4f8b63;letter-spacing:0.05em;">Model aktif</span>
         </div>
     </div>
-    <div style="height:1px;background:#0d2240;margin:0 16px 16px;"></div>
+    <div style="height:1px;background:#d7e3ef;margin:0 16px 16px;"></div>
     """, unsafe_allow_html=True)
 
     # ── Nav label ──────────────────────────────────────────────
     st.markdown("""
-    <div style="font-size:10px;font-weight:600;color:#1e4a6a;letter-spacing:0.12em;text-transform:uppercase;padding:0 16px;margin-bottom:4px;">
+    <div style="font-size:10px;font-weight:800;color:#6f87a1;letter-spacing:0.12em;text-transform:uppercase;padding:0 16px;margin-bottom:4px;">
         Navigasi
     </div>
     """, unsafe_allow_html=True)
@@ -499,11 +500,11 @@ with st.sidebar:
 
     for item in NAV_ITEMS:
         is_active = st.session_state.current_page == item
-        active_bg    = "background:rgba(24,95,165,0.18); border:1px solid #1e3a5a;" if is_active else "background:transparent; border:1px solid transparent;"
-        icon_bg      = "background:#185FA5;" if is_active else "background:#0c1d31;"
-        icon_color   = "#ffffff" if is_active else "#3a6a90"
-        label_color  = "#e8edf3" if is_active else "#5a7a9a"
-        badge        = '<span style="margin-left:auto;background:#0e2a48;color:#378ADD;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:500;">Aktif</span>' if is_active else ""
+        active_bg    = "background:rgba(62,123,183,0.12); border:1px solid #bfd1e3;" if is_active else "background:transparent; border:1px solid transparent;"
+        icon_bg      = "background:#dfeaf5;" if is_active else "background:#eef4fb;"
+        icon_color   = "#2d6faa" if is_active else "#6f87a1"
+        label_color  = "#214968" if is_active else "#6f87a1"
+        badge        = '<span style="margin-left:auto;background:#edf4fb;color:#2d6faa;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:500;border:1px solid #d7e3ef;">Aktif</span>' if is_active else ""
 
         icon_svg = NAV_ICONS[item].replace('stroke="currentColor"', f'stroke="{icon_color}"')
 
@@ -512,7 +513,7 @@ with st.sidebar:
             <div style="width:30px;height:30px;border-radius:8px;{icon_bg};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                 {icon_svg}
             </div>
-            <span style="font-size:13px;font-weight:{'500' if is_active else '400'};color:{label_color};">{item}</span>
+            <span style="font-size:13px;font-weight:{'700' if is_active else '600'};color:{label_color};">{item}</span>
             {badge}
         </div>
         """, unsafe_allow_html=True)
@@ -525,8 +526,8 @@ with st.sidebar:
 
     # ── Divider + Mode Demo ────────────────────────────────────
     st.markdown("""
-    <div style="height:1px;background:#0d2240;margin:12px 16px;"></div>
-    <div style="font-size:10px;font-weight:600;color:#1e4a6a;letter-spacing:0.12em;text-transform:uppercase;padding:0 16px;margin-bottom:8px;">
+    <div style="height:1px;background:#d7e3ef;margin:12px 16px;"></div>
+    <div style="font-size:10px;font-weight:800;color:#6f87a1;letter-spacing:0.12em;text-transform:uppercase;padding:0 16px;margin-bottom:8px;">
         Mode Demo
     </div>
     """, unsafe_allow_html=True)
@@ -535,8 +536,8 @@ with st.sidebar:
 
     # ── Divider + Indikator ────────────────────────────────────
     st.markdown("""
-    <div style="height:1px;background:#0d2240;margin:12px 16px;"></div>
-    <div style="font-size:10px;font-weight:600;color:#1e4a6a;letter-spacing:0.12em;text-transform:uppercase;padding:0 16px;margin-bottom:8px;">
+    <div style="height:1px;background:#d7e3ef;margin:12px 16px;"></div>
+    <div style="font-size:10px;font-weight:800;color:#6f87a1;letter-spacing:0.12em;text-transform:uppercase;padding:0 16px;margin-bottom:8px;">
         Indikator Lowongan Palsu
     </div>
     """, unsafe_allow_html=True)
@@ -563,10 +564,10 @@ with st.sidebar:
 
     # ── Footer ─────────────────────────────────────────────────
     st.markdown("""
-    <div style="height:1px;background:#0d2240;margin:12px 16px;"></div>
+    <div style="height:1px;background:#d7e3ef;margin:12px 16px;"></div>
     <div style="text-align:center;padding:0 16px 20px;">
-        <div style="font-size:10px;color:#1a3a5a;">Tim PJK-GM088</div>
-        <div style="font-size:10px;color:#102030;margin-top:2px;">Capstone Pijak × IBM SkillsBuild 2026</div>
+        <div style="font-size:10px;color:#6f87a1;font-weight:600;">Tim PJK-GM088</div>
+        <div style="font-size:10px;color:#91a6bd;margin-top:2px;font-weight:600;">Capstone Pijak × IBM SkillsBuild 2026</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -581,13 +582,13 @@ if page == "Deteksi Lowongan":
     <div class="gj-header">
         <div class="gj-logo-wrap">
             <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="46" height="46" rx="12" fill="#0a1e36"/>
-                <rect x="0.5" y="0.5" width="45" height="45" rx="11.5" stroke="#1a4a8a" stroke-opacity="0.9"/>
+                <rect width="46" height="46" rx="12" fill="#eef4fb"/>
+                <rect x="0.5" y="0.5" width="45" height="45" rx="11.5" stroke="#c0d2e5" stroke-opacity="0.95"/>
                 <path d="M23 8L10 13V22C10 29 15.5 35.5 23 37.5C30.5 35.5 36 29 36 22V13L23 8Z"
-                      fill="#0c2d50" stroke="#1e5fa5" stroke-width="1.3"/>
-                <circle cx="21" cy="22" r="5" stroke="#378ADD" stroke-width="1.8" fill="none"/>
-                <line x1="24.8" y1="25.8" x2="28" y2="29" stroke="#378ADD" stroke-width="2.2" stroke-linecap="round"/>
-                <circle cx="19.5" cy="20" r="1.2" fill="#7ab8e8" opacity="0.6"/>
+                        fill="#dfeaf5" stroke="#5f90bf" stroke-width="1.3"/>
+                <circle cx="21" cy="22" r="5" stroke="#4f86ba" stroke-width="1.8" fill="none"/>
+                <line x1="24.8" y1="25.8" x2="28" y2="29" stroke="#4f86ba" stroke-width="2.2" stroke-linecap="round"/>
+                <circle cx="19.5" cy="20" r="1.2" fill="#9ec0de" opacity="0.8"/>
             </svg>
             <div class="gj-title">Ghost<span>Jobs</span></div>
         </div>
@@ -617,12 +618,12 @@ if page == "Deteksi Lowongan":
         label_asli = "PALSU" if selected_row['fraudulent'] == 1 else "ASLI"
         warna_label = "#e24b4a" if selected_row['fraudulent'] == 1 else "#2ecc71"
         st.markdown(f"""
-        <div style="background:#060e1a;border:1px solid #0d2240;border-radius:8px;
-                    padding:8px 14px;margin-bottom:0.75rem;font-size:12px;color:#3a6a90;
+            <div style="background:#ffffff;border:1px solid #d7e3ef;border-radius:8px;
+                    padding:8px 14px;margin-bottom:0.75rem;font-size:12px;color:#6f87a1;
                     display:flex;gap:16px;flex-wrap:wrap;">
             <span>Label asli: <strong style="color:{warna_label};">{label_asli}</strong></span>
-            <span>Industri: <strong style="color:#7aaccc;">{str(selected_row.get('industry','—'))}</strong></span>
-            <span>Lokasi: <strong style="color:#7aaccc;">{str(selected_row.get('location','—'))}</strong></span>
+                <span>Industri: <strong style="color:#214968;">{str(selected_row.get('industry','—'))}</strong></span>
+                <span>Lokasi: <strong style="color:#214968;">{str(selected_row.get('location','—'))}</strong></span>
         </div>
         """, unsafe_allow_html=True)
         st.info("Form di bawah sudah terisi otomatis dari dataset. Klik **Analisis** untuk melihat prediksi model.")
@@ -692,24 +693,6 @@ if page == "Deteksi Lowongan":
     st.markdown('<div class="step-label"><span class="step-num">4</span> Atribut Lowongan</div>', unsafe_allow_html=True)
  
     col1, col2, col3 = st.columns(3)
-
-    with col1:
-        st.metric(
-            "Model",
-            "Random Forest"
-        )
-
-    with col2:
-        st.metric(
-            "Accuracy",
-            "92%"
-        )
-
-    with col3:
-        st.metric(
-            "Threshold",
-            "58%"
-        )
     
     with col1:
         has_company_logo = st.checkbox("Ada logo perusahaan",   value=sb("has_company_logo"))
@@ -870,20 +853,20 @@ if page == "Deteksi Lowongan":
             with st.expander("Detail teknis analisis"):
                 st.markdown(f"""
                 <div style="display:flex;gap:12px;flex-wrap:wrap;padding:4px 0;">
-                    <div style="background:#080f1e;border:1px solid #0d2240;border-radius:8px;padding:8px 14px;min-width:100px;">
-                        <div style="font-size:10px;color:#3a6a90;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px;">Model</div>
-                        <div style="font-size:13px;font-weight:600;color:#7aaccc;">Random Forest</div>
+                    <div style="background:#ffffff;border:1px solid #d7e3ef;border-radius:8px;padding:8px 14px;min-width:100px;">
+                        <div style="font-size:10px;color:#6f87a1;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px;">Model</div>
+                        <div style="font-size:13px;font-weight:600;color:#214968;">Random Forest</div>
                     </div>
-                    <div style="background:#080f1e;border:1px solid #0d2240;border-radius:8px;padding:8px 14px;min-width:100px;">
-                        <div style="font-size:10px;color:#3a6a90;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px;">Probabilitas</div>
-                        <div style="font-size:13px;font-weight:600;color:#7aaccc;">{prob_pct:.2f}%</div>
+                        <div style="background:#ffffff;border:1px solid #d7e3ef;border-radius:8px;padding:8px 14px;min-width:100px;">
+                            <div style="font-size:10px;color:#6f87a1;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px;">Probabilitas</div>
+                            <div style="font-size:13px;font-weight:600;color:#214968;">{prob_pct:.2f}%</div>
                     </div>
-                    <div style="background:#080f1e;border:1px solid #0d2240;border-radius:8px;padding:8px 14px;min-width:100px;">
-                        <div style="font-size:10px;color:#3a6a90;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px;">Threshold</div>
-                        <div style="font-size:13px;font-weight:600;color:#7aaccc;">{THRESHOLD*100:.2f}%</div>
+                        <div style="background:#ffffff;border:1px solid #d7e3ef;border-radius:8px;padding:8px 14px;min-width:100px;">
+                            <div style="font-size:10px;color:#6f87a1;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px;">Threshold</div>
+                            <div style="font-size:13px;font-weight:600;color:#214968;">{THRESHOLD*100:.2f}%</div>
                     </div>
                 </div>
-                <div style="font-size:11px;color:#2a5a7a;margin-top:8px;">
+                    <div style="font-size:11px;color:#6f87a1;margin-top:8px;">
                     Fitur teks: TF-IDF ({len(KOLOM_TEKS)} kolom) · Fitur numerik: {len(KOLOM_NUMERIK)} fitur
                 </div>
                 """, unsafe_allow_html=True)
@@ -922,11 +905,11 @@ elif page == "Panduan":
 
     for i, (t, d) in enumerate(steps, 1):
         st.markdown(f"""
-        <div style="display:flex;gap:12px;align-items:flex-start;background:#080f1e;border:1px solid #0d2240;border-radius:10px;padding:1rem 1.25rem;margin-bottom:0.6rem;">
-            <div style="width:24px;height:24px;background:#0c2444;border:1px solid #1a4a8a;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;color:#378ADD;flex-shrink:0;margin-top:2px;">{i}</div>
+        <div style="display:flex;gap:12px;align-items:flex-start;background:#ffffff;border:1px solid #d7e3ef;border-radius:10px;padding:1rem 1.25rem;margin-bottom:0.6rem;">
+            <div style="width:24px;height:24px;background:#eef4fb;border:1px solid #d7e3ef;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;color:#2d6faa;flex-shrink:0;margin-top:2px;">{i}</div>
             <div>
-                <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;color:#9abcda;margin-bottom:3px;">{t}</div>
-                <div style="font-size:13px;color:#3a6a90;line-height:1.6;">{d}</div>
+                <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;color:#214968;margin-bottom:3px;">{t}</div>
+                <div style="font-size:13px;color:#6f87a1;line-height:1.6;">{d}</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -957,8 +940,8 @@ elif page == "Tentang Sistem":
     # ── Baris 1: Pipeline + Spesifikasi ───────────────────────
     st.markdown("""
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
-        <div style="background:#080f1e;border:1px solid #0d2240;border-radius:12px;padding:0.65rem;">
-            <div style="font-size:13px;font-weight:600;color:#378ADD;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px;margin-top:8px;margin-left:12px;">Pipeline Model</div>
+        <div style="background:#ffffff;border:1px solid #d7e3ef;border-radius:12px;padding:0.65rem;">
+            <div style="font-size:13px;font-weight:600;color:#2d6faa;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px;margin-top:8px;margin-left:12px;">Pipeline Model</div>
     """, unsafe_allow_html=True)
 
     pipeline = [
@@ -971,12 +954,12 @@ elif page == "Tentang Sistem":
     for num, pt, pd_ in pipeline:
         st.markdown(f"""
         <div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid #0d1828;align-items:flex-start;">
-            <div style="font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;color:#185FA5;
-                        background:#0c1e34;border:1px solid #0d2a4a;border-radius:4px;
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;color:#2d6faa;
+                        background:#eef4fb;border:1px solid #d7e3ef;border-radius:4px;
                         padding:2px 5px;flex-shrink:0;margin-top:1px;letter-spacing:0.04em;">{num}</div>
             <div>
-                <div style="font-weight:600;color:#7aaccc;font-size:13px;line-height:1.3;">{pt}</div>
-                <div style="color:#2a5a7a;font-size:11px;margin-top:2px;line-height:1.5;">{pd_}</div>
+                <div style="font-weight:600;color:#214968;font-size:13px;line-height:1.3;">{pt}</div>
+                <div style="color:#6f87a1;font-size:11px;margin-top:2px;line-height:1.5;">{pd_}</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -996,8 +979,8 @@ elif page == "Tentang Sistem":
     ]
 
     st.markdown("""
-        <div style="background:#080f1e;border:1px solid #0d2240;border-radius:12px;padding:0.65rem;">
-            <div style="font-size:13px;font-weight:600;color:#378ADD;letter-spacing:0.12em;
+        <div style="background:#ffffff;border:1px solid #d7e3ef;border-radius:12px;padding:0.65rem;">
+            <div style="font-size:13px;font-weight:600;color:#2d6faa;letter-spacing:0.12em;
                         text-transform:uppercase;margin-bottom:12px;margin-top:8px;margin-left:12px;">Spesifikasi</div>
     """, unsafe_allow_html=True)
 
@@ -1005,8 +988,8 @@ elif page == "Tentang Sistem":
         st.markdown(f"""
         <div style="display:flex;justify-content:space-between;align-items:center;
                     padding:7px 0;border-bottom:1px solid #0d1828;font-size:12px;">
-            <span style="color:#2a5a7a;">{lbl}</span>
-            <span style="color:#7aaccc;font-weight:500;">{val}</span>
+            <span style="color:#6f87a1;">{lbl}</span>
+            <span style="color:#214968;font-weight:500;">{val}</span>
         </div>
         """, unsafe_allow_html=True)
 
@@ -1021,28 +1004,28 @@ elif page == "Tentang Sistem":
     ]
 
     st.markdown("""
-    <div style="background:#080f1e;border:1px solid #0d2240;border-radius:12px;padding:0.75rem;margin-bottom:12px;">
-        <div style="font-size:13px;font-weight:600;color:#378ADD;letter-spacing:0.12em;
+    <div style="background:#ffffff;border:1px solid #d7e3ef;border-radius:12px;padding:0.75rem;margin-bottom:12px;">
+        <div style="font-size:13px;font-weight:600;color:#2d6faa;letter-spacing:0.12em;
                     text-transform:uppercase;margin-bottom:4px;margin-top:8px;margin-left:12px;">Tim Pengembang</div>
-        <div style="font-size:11px;color:#1a3a5a;margin-bottom:12px;margin-left:12px;">
+        <div style="font-size:11px;color:#6f87a1;margin-bottom:12px;margin-left:12px;">
             PJK-GM088 · Capstone Pijak × IBM SkillsBuild 2026
         </div>
     """, unsafe_allow_html=True)
 
     for name, cid, role, initials in members:
         st.markdown(f"""
-        <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #0d1828;">
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #e6eef7;">
             <div style="width:36px;height:36px;border-radius:8px;
-                        background:#0c2444;border:1px solid #1a4a8a;
+                        background:#eef4fb;border:1px solid #d7e3ef;
                         display:flex;align-items:center;justify-content:center;
                         font-family:'Space Grotesk',sans-serif;font-size:11px;
-                        font-weight:700;color:#378ADD;flex-shrink:0;">{initials}</div>
+                        font-weight:700;color:#2d6faa;flex-shrink:0;">{initials}</div>
             <div style="flex:1;min-width:0;">
-                <div style="font-weight:600;color:#9abcda;font-size:13px;">{name}</div>
-                <div style="font-size:11px;color:#2a5a7a;margin-top:1px;">{cid}</div>
+                <div style="font-weight:600;color:#214968;font-size:13px;">{name}</div>
+                <div style="font-size:11px;color:#6f87a1;margin-top:1px;">{cid}</div>
             </div>
-            <div style="font-size:11px;color:#185FA5;background:#061428;
-                        border:1px solid #0d2a4a;border-radius:20px;
+            <div style="font-size:11px;color:#2d6faa;background:#eef4fb;
+                        border:1px solid #d7e3ef;border-radius:20px;
                         padding:3px 10px;white-space:nowrap;">{role}</div>
         </div>
         """, unsafe_allow_html=True)
