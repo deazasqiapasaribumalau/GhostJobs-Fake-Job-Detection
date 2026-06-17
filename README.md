@@ -1,10 +1,10 @@
-# 👻 GhostJobs — Fake Job Detector
+# 👻 GhostJobs - Fake Job Detector
 
-> **Deteksi lowongan kerja palsu berbasis AI** — mengklasifikasikan job posting sebagai asli atau scam menggunakan machine learning, dilengkapi penjelasan hasil prediksi yang mudah dipahami.
+> **Deteksi lowongan kerja palsu berbasis AI** mengklasifikasikan job posting sebagai asli atau scam menggunakan machine learning, dilengkapi penjelasan hasil prediksi yang mudah dipahami.
 
-🔗 **Live App:** [ghostjobs-fake-job-detection.streamlit.app](https://ghostjobs-fake-job-detection.streamlit.app/)
-📁 **Dataset:** [Kaggle — Real or Fake? Fake Job Posting Prediction](https://www.kaggle.com/datasets/shivamb/real-or-fake-fake-jobposting-prediction)
-🏫 **Program:** Capstone Project Pijak × IBM SkillsBuild 2026 · Tim PJK-GM088
+🔗 **Live App:** [ghostjobs-fake-job-detection.streamlit.app](https://ghostjobs-fake-job-detection.streamlit.app/) 
+📁 **Dataset:** [Kaggle — Real or Fake? Fake Job Posting Prediction](https://www.kaggle.com/datasets/shivamb/real-or-fake-fake-jobposting-prediction) 
+🏫 **Program:** Capstone Project Pijak × IBM SkillsBuild 2026 · Tim PJK-GM088 
 
 ---
 
