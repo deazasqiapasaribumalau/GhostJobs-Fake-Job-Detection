@@ -3,6 +3,7 @@ import joblib
 import json
 import re
 import numpy as np
+import pandas as pd
 from scipy.sparse import hstack, csr_matrix
 import nltk
 from nltk.tokenize import word_tokenize
@@ -27,13 +28,14 @@ def load_assets():
     model      = joblib.load(os.path.join(MODEL_DIR, "random_forest_tuned_model.pkl"))
     vectorizer = joblib.load(os.path.join(MODEL_DIR, "tfidf_vectorizer.pkl"))
     scaler     = joblib.load(os.path.join(MODEL_DIR, "scaler.pkl"))
+    df_demo    = pd.read_csv(os.path.join(MODEL_DIR, "sample_demo.csv"))
     for res in ["punkt", "stopwords", "wordnet", "punkt_tab"]:
         nltk.download(res, quiet=True)
     stemmer    = PorterStemmer()
     stop_words = set(stopwords.words("english"))
-    return config, model, vectorizer, scaler, stemmer, stop_words
+    return config, model, vectorizer, scaler, stemmer, stop_words, df_demo
 
-config, model, vectorizer, scaler, stemmer, STOP_WORDS = load_assets()
+config, model, vectorizer, scaler, stemmer, STOP_WORDS, df_demo = load_assets()
 
 THRESHOLD     = config["threshold_optimal"]
 KOLOM_NUMERIK = config["kolom_numerik"]
@@ -479,6 +481,16 @@ with st.sidebar:
 
     page = st.session_state.current_page
 
+    # ── Divider + Mode Demo ────────────────────────────────────
+    st.markdown("""
+    <div style="height:1px;background:#0d2240;margin:12px 16px;"></div>
+    <div style="font-size:10px;font-weight:600;color:#1e4a6a;letter-spacing:0.12em;text-transform:uppercase;padding:0 16px;margin-bottom:8px;">
+        Mode Demo
+    </div>
+    """, unsafe_allow_html=True)
+
+    use_demo = st.toggle("Gunakan contoh dari database", value=False)
+
     # ── Divider + Indikator ────────────────────────────────────
     st.markdown("""
     <div style="height:1px;background:#0d2240;margin:12px 16px;"></div>
@@ -520,7 +532,7 @@ with st.sidebar:
 # PAGE 1 — DETEKSI
 # ══════════════════════════════════════════════════════════════
 if page == "Deteksi Lowongan":
-
+ 
     st.markdown("""
     <div class="gj-header">
         <div class="gj-logo-wrap">
@@ -538,55 +550,111 @@ if page == "Deteksi Lowongan":
         <div class="gj-sub">Deteksi lowongan kerja palsu berbasis AI — akurat &amp; transparan</div>
     </div>
     """, unsafe_allow_html=True)
+ 
+    # ── Mode Demo Database ─────────────────────────────────────
+    selected_row = None
+    if use_demo:
+        st.markdown('<div class="step-label" style="margin-top:0;"><span class="step-num" style="background:#0c3020;border-color:#1a6a40;color:#2ecc71;">▶</span> Pilih contoh lowongan dari database</div>', unsafe_allow_html=True)
 
-    # ── Step 1: Konten Utama (wajib) ──────────────────────────
-    st.markdown('<div class="step-label"><span class="step-num">1</span> Konten lowongan <span style="color:#1a4a6a;font-size:10px;">(wajib diisi)</span></div>', unsafe_allow_html=True)
+        df_demo['_label_text'] = df_demo.apply(
+            lambda r: f"[{'PALSU' if r['fraudulent']==1 else 'ASLI '}]  {str(r.get('title','(no title)'))[:55]}  —  {str(r.get('location',''))[:25]}",
+            axis=1
+        )
+        pilihan = st.selectbox(
+            "Pilih lowongan",
+            options=df_demo.index.tolist(),
+            format_func=lambda i: df_demo.loc[i, '_label_text'],
+            label_visibility="collapsed"
+        )
+        selected_row = df_demo.loc[pilihan]
 
+        label_asli = "PALSU" if selected_row['fraudulent'] == 1 else "ASLI"
+        warna_label = "#e24b4a" if selected_row['fraudulent'] == 1 else "#2ecc71"
+        st.markdown(f"""
+        <div style="background:#060e1a;border:1px solid #0d2240;border-radius:8px;
+                    padding:8px 14px;margin-bottom:0.75rem;font-size:12px;color:#3a6a90;
+                    display:flex;gap:16px;flex-wrap:wrap;">
+            <span>Label asli: <strong style="color:{warna_label};">{label_asli}</strong></span>
+            <span>Industri: <strong style="color:#7aaccc;">{str(selected_row.get('industry','—'))}</strong></span>
+            <span>Lokasi: <strong style="color:#7aaccc;">{str(selected_row.get('location','—'))}</strong></span>
+        </div>
+        """, unsafe_allow_html=True)
+        st.info("Form di bawah sudah terisi otomatis dari dataset. Klik **Analisis** untuk melihat prediksi model.")
+
+    def sv(col):
+        """Helper: ambil value dari selected_row, return '' kalau None/NaN."""
+        if selected_row is None:
+            return ""
+        val = selected_row.get(col, "")
+        return "" if pd.isna(val) else str(val)
+
+    def sb(col):
+        """Helper: ambil boolean dari selected_row."""
+        if selected_row is None:
+            return False
+        try:
+            return bool(int(selected_row.get(col, 0)))
+        except Exception:
+            return False
+
+    # ── Bagian 1: Informasi Lowongan (Wajib) ──────────────────
+    st.markdown('<div class="step-label"><span class="step-num">1</span> Informasi Lowongan <span style="color:#1a4a6a;font-size:10px;">(wajib diisi)</span></div>', unsafe_allow_html=True)
+ 
+    title = st.text_input("Judul posisi", value=sv("title"), placeholder="e.g. Data Analyst, Software Engineer")
     description = st.text_area(
         "Deskripsi pekerjaan",
+        value=sv("description"),
         height=150,
         placeholder="Salin deskripsi lengkap lowongan di sini — tanggung jawab, tugas, ekspektasi..."
     )
     requirements = st.text_area(
         "Persyaratan & kualifikasi",
+        value=sv("requirements"),
         height=100,
         placeholder="Skill, pengalaman, sertifikasi, pendidikan yang dibutuhkan..."
     )
-
-    # ── Step 2: Atribut Cepat ──────────────────────────────────
-    st.markdown('<div class="step-label"><span class="step-num">2</span> Atribut lowongan</div>', unsafe_allow_html=True)
-
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        telecommuting    = st.checkbox("Posisi Remote / WFH")
-    with col2:
-        has_company_logo = st.checkbox("Ada logo perusahaan")
-    with col3:
-        has_questions    = st.checkbox("Ada pertanyaan skrining")
-
-    # ── Step 3: Info Tambahan (opsional, collapsible) ──────────
-    st.markdown('<div class="step-label"><span class="step-num">3</span> Info tambahan <span style="color:#1a4a6a;font-size:10px;">(opsional, makin lengkap makin akurat)</span></div>', unsafe_allow_html=True)
-
-    with st.expander("Isi info tambahan opsional"):
+ 
+    # ── Bagian 2: Informasi Perusahaan (Disarankan) ────────────
+    st.markdown('<div class="step-label"><span class="step-num">2</span> Informasi Perusahaan <span style="color:#1a4a6a;font-size:10px;">(disarankan)</span></div>', unsafe_allow_html=True)
+ 
+    with st.expander("Isi informasi perusahaan", expanded=use_demo):
+        col_p1, col_p2 = st.columns(2)
+        with col_p1:
+            company_name = st.text_input("Nama perusahaan", value=sv("company_name"), placeholder="e.g. PT Maju Bersama")
+            industry     = st.text_input("Industri",        value=sv("industry"),     placeholder="e.g. Technology, Finance")
+        with col_p2:
+            location     = st.text_input("Lokasi",          value=sv("location"),     placeholder="e.g. Jakarta / Remote")
+        company_profile  = st.text_area("Profil perusahaan", value=sv("company_profile"), height=80,
+                                        placeholder="Visi misi, budaya kerja, deskripsi singkat perusahaan...")
+ 
+    # ── Bagian 3: Informasi Tambahan (Opsional) ────────────────
+    st.markdown('<div class="step-label"><span class="step-num">3</span> Informasi Tambahan <span style="color:#1a4a6a;font-size:10px;">(opsional)</span></div>', unsafe_allow_html=True)
+ 
+    with st.expander("Isi informasi tambahan", expanded=use_demo):
         col_a, col_b = st.columns(2)
         with col_a:
-            title               = st.text_input("Judul posisi",        placeholder="e.g. Data Analyst")
-            employment_type     = st.text_input("Tipe pekerjaan",      placeholder="e.g. Full-time, Part-time")
-            required_experience = st.text_input("Level pengalaman",    placeholder="e.g. Entry Level, Mid-Senior")
-            industry            = st.text_input("Industri",            placeholder="e.g. Technology, Finance")
+            benefits            = st.text_area("Benefit & tunjangan", value=sv("benefits"), height=70,
+                                               placeholder="Gaji, asuransi, THR, fasilitas lainnya...")
+            required_experience = st.text_input("Level pengalaman",   value=sv("required_experience"), placeholder="e.g. Entry Level, Mid-Senior")
+            department          = st.text_input("Departemen",         value=sv("department"),          placeholder="e.g. Engineering, Marketing")
         with col_b:
-            location            = st.text_input("Lokasi",              placeholder="e.g. Jakarta / Remote")
-            department          = st.text_input("Departemen",          placeholder="e.g. Engineering, Marketing")
-            required_education  = st.text_input("Pendidikan",          placeholder="e.g. S1, Bachelor's Degree")
-            function_field      = st.text_input("Fungsi pekerjaan",    placeholder="e.g. Engineering, Sales")
-
-        company_profile = st.text_area("Profil perusahaan", height=80,
-                                       placeholder="Visi misi, budaya kerja, deskripsi singkat perusahaan...")
-        benefits        = st.text_area("Benefit & tunjangan", height=70,
-                                       placeholder="Gaji, asuransi, THR, fasilitas lainnya...")
-
+            required_education  = st.text_input("Pendidikan",         value=sv("required_education"),  placeholder="e.g. S1, Bachelor's Degree")
+            function_field      = st.text_input("Fungsi pekerjaan",   value=sv("function"),            placeholder="e.g. Engineering, Sales")
+            employment_type     = st.text_input("Tipe pekerjaan",     value=sv("employment_type"),     placeholder="e.g. Full-time, Part-time")
+ 
+    # ── Bagian 4: Atribut ──────────────────────────────────────
+    st.markdown('<div class="step-label"><span class="step-num">4</span> Atribut Lowongan</div>', unsafe_allow_html=True)
+ 
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        has_company_logo = st.checkbox("Ada logo perusahaan",   value=sb("has_company_logo"))
+    with col2:
+        telecommuting    = st.checkbox("Posisi Remote / WFH",   value=sb("telecommuting"))
+    with col3:
+        has_questions    = st.checkbox("Ada pertanyaan skrining", value=sb("has_questions"))
+ 
     st.markdown("<br>", unsafe_allow_html=True)
-
+ 
     # ── Tombol Deteksi ─────────────────────────────────────────
     if st.button("Analisis Lowongan Sekarang"):
         if not description.strip():
@@ -594,22 +662,45 @@ if page == "Deteksi Lowongan":
         else:
             with st.spinner("Sedang menganalisis..."):
                 data = {
-                    "title": title, "location": location, "department": department,
-                    "company_profile": company_profile, "description": description,
-                    "requirements": requirements, "benefits": benefits,
+                    "title": title,
+                    "location": location,
+                    "department": department,
+                    "company_profile": company_profile,
+                    "description": description,
+                    "requirements": requirements,
+                    "benefits": benefits,
                     "employment_type": employment_type,
                     "required_experience": required_experience,
                     "required_education": required_education,
-                    "industry": industry, "function": function_field,
+                    "industry": industry,
+                    "function": function_field,
                     "telecommuting": int(telecommuting),
                     "has_company_logo": int(has_company_logo),
                     "has_questions": int(has_questions),
                 }
                 prob, label = predict(data)
-
+ 
             prob_pct = prob * 100
 
-            # ── Hasil FAKE ─────────────────────────────────────
+            # ── Perbandingan label asli vs prediksi (mode demo) ─
+            if use_demo and selected_row is not None:
+                label_asli_val = int(selected_row['fraudulent'])
+                benar = label == label_asli_val
+                status_txt   = "✔ Prediksi BENAR" if benar else "✘ Prediksi SALAH"
+                status_warna = "#2ecc71" if benar else "#e24b4a"
+                la_txt  = "PALSU" if label_asli_val == 1 else "ASLI"
+                pr_txt  = "PALSU" if label == 1 else "ASLI"
+                la_warn = "#e24b4a" if label_asli_val == 1 else "#2ecc71"
+                pr_warn = "#e24b4a" if label == 1 else "#2ecc71"
+                st.markdown(f"""
+                <div style="background:#060e1a;border:1px solid #0d2240;border-radius:10px;
+                            padding:10px 16px;margin-bottom:0.75rem;display:flex;gap:20px;
+                            flex-wrap:wrap;align-items:center;font-size:13px;">
+                    <span style="color:#3a6a90;">Label dataset: <strong style="color:{la_warn};">{la_txt}</strong></span>
+                    <span style="color:#3a6a90;">Prediksi model: <strong style="color:{pr_warn};">{pr_txt}</strong></span>
+                    <span style="font-weight:600;color:{status_warna};">{status_txt}</span>
+                </div>
+                """, unsafe_allow_html=True)
             if label == 1:
                 st.markdown(f"""
                 <div class="result-wrap">
@@ -622,7 +713,7 @@ if page == "Deteksi Lowongan":
                         </div>
                     </div>
                 """, unsafe_allow_html=True)
-
+ 
                 red_flags = []
                 if not has_company_logo:
                     red_flags.append("Tidak ada logo perusahaan")
@@ -639,7 +730,7 @@ if page == "Deteksi Lowongan":
                     red_flags.append("Deskripsi mengandung alamat email langsung")
                 if description.count("!") > 3:
                     red_flags.append(f"Terlalu banyak tanda seru ({description.count('!')} kali)")
-
+ 
                 if red_flags:
                     flags_html = "".join([
                         f'<div class="flag-item">⚠ {f}</div>' for f in red_flags
@@ -650,7 +741,7 @@ if page == "Deteksi Lowongan":
                         {flags_html}
                     </div>
                     """, unsafe_allow_html=True)
-
+ 
                 st.markdown(f"""
                     <div class="result-meta">
                         <span class="meta-chip">Random Forest</span>
@@ -658,7 +749,7 @@ if page == "Deteksi Lowongan":
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
-
+ 
             # ── Hasil REAL ─────────────────────────────────────
             else:
                 st.markdown(f"""
@@ -672,13 +763,13 @@ if page == "Deteksi Lowongan":
                         </div>
                     </div>
                 """, unsafe_allow_html=True)
-
+ 
                 safe_signals = []
                 if has_company_logo:        safe_signals.append("Memiliki logo perusahaan")
                 if has_questions:           safe_signals.append("Ada pertanyaan skrining yang terstruktur")
                 if benefits.strip():        safe_signals.append("Informasi benefit tersedia")
                 if company_profile.strip(): safe_signals.append("Profil perusahaan dicantumkan")
-
+ 
                 if safe_signals:
                     sigs_html = "".join([
                         f'<div class="safe-item">✔ {s}</div>' for s in safe_signals
@@ -689,7 +780,7 @@ if page == "Deteksi Lowongan":
                         {sigs_html}
                     </div>
                     """, unsafe_allow_html=True)
-
+ 
                 st.markdown(f"""
                     <div class="result-meta">
                         <span class="meta-chip">Random Forest</span>
@@ -697,15 +788,29 @@ if page == "Deteksi Lowongan":
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
-
-            # ── Detail teknis ──────────────────────────────────
+ 
+            # ── Detail teknis (compact, inline HTML) ───────────
             with st.expander("Detail teknis analisis"):
-                c1, c2, c3 = st.columns(3)
-                c1.metric("Model", "Random Forest")
-                c2.metric("Probabilitas", f"{prob_pct:.2f}%")
-                c3.metric("Threshold", f"{THRESHOLD*100:.2f}%")
-                st.caption(f"Fitur teks: TF-IDF ({len(KOLOM_TEKS)} kolom) · Fitur numerik: {len(KOLOM_NUMERIK)} fitur")
-
+                st.markdown(f"""
+                <div style="display:flex;gap:12px;flex-wrap:wrap;padding:4px 0;">
+                    <div style="background:#080f1e;border:1px solid #0d2240;border-radius:8px;padding:8px 14px;min-width:100px;">
+                        <div style="font-size:10px;color:#3a6a90;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px;">Model</div>
+                        <div style="font-size:13px;font-weight:600;color:#7aaccc;">Random Forest</div>
+                    </div>
+                    <div style="background:#080f1e;border:1px solid #0d2240;border-radius:8px;padding:8px 14px;min-width:100px;">
+                        <div style="font-size:10px;color:#3a6a90;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px;">Probabilitas</div>
+                        <div style="font-size:13px;font-weight:600;color:#7aaccc;">{prob_pct:.2f}%</div>
+                    </div>
+                    <div style="background:#080f1e;border:1px solid #0d2240;border-radius:8px;padding:8px 14px;min-width:100px;">
+                        <div style="font-size:10px;color:#3a6a90;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px;">Threshold</div>
+                        <div style="font-size:13px;font-weight:600;color:#7aaccc;">{THRESHOLD*100:.2f}%</div>
+                    </div>
+                </div>
+                <div style="font-size:11px;color:#2a5a7a;margin-top:8px;">
+                    Fitur teks: TF-IDF ({len(KOLOM_TEKS)} kolom) · Fitur numerik: {len(KOLOM_NUMERIK)} fitur
+                </div>
+                """, unsafe_allow_html=True)
+ 
             st.markdown("""
             <div class="disclaimer">
                 ⚠ Hasil ini dihasilkan oleh model ML dan tidak menjamin kebenaran 100%.
