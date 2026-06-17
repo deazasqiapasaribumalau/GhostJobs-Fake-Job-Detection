@@ -15,7 +15,7 @@ import os
 st.set_page_config(
     page_title="GhostJobs Detector",
     page_icon="👻",
-    layout="centered",
+    layout="wide",
     initial_sidebar_state="expanded"
 )
 
@@ -124,6 +124,48 @@ footer    { visibility: hidden; }
 [data-testid="stSidebar"] h3 {
     color: #c8dff0 !important;
     font-family: 'Space Grotesk', sans-serif !important;
+}
+            
+            /* ─────────────────────────────
+   PAGE TRANSITION ANIMATION
+───────────────────────────── */
+
+.fade-page{
+    animation: fadePage 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes fadePage{
+    from{
+        opacity:0;
+        transform:translateY(60px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* efek hover card */
+.input-card,
+.about-card,
+.result-wrap{
+    transition: all 0.25s ease;
+}
+
+.input-card:hover,
+.about-card:hover{
+    transform: translateY(-2px);
+    border-color:#185FA5;
+}
+
+/* efek muncul bertahap */
+.gj-header{
+    animation: fadePage 0.8s ease;
+}
+
+/* smooth sidebar */
+[data-testid="stSidebar"]{
+    transition: all 0.3s ease;
 }
 
 /* ── Hero header ── */
@@ -532,6 +574,8 @@ with st.sidebar:
 # PAGE 1 — DETEKSI
 # ══════════════════════════════════════════════════════════════
 if page == "Deteksi Lowongan":
+
+    st.markdown('<div class="fade-page">', unsafe_allow_html=True)
  
     st.markdown("""
     <div class="gj-header">
@@ -550,6 +594,8 @@ if page == "Deteksi Lowongan":
         <div class="gj-sub">Deteksi lowongan kerja palsu berbasis AI — akurat &amp; transparan</div>
     </div>
     """, unsafe_allow_html=True)
+
+    st.markdown('</div>', unsafe_allow_html=True)
  
     # ── Mode Demo Database ─────────────────────────────────────
     selected_row = None
@@ -646,6 +692,25 @@ if page == "Deteksi Lowongan":
     st.markdown('<div class="step-label"><span class="step-num">4</span> Atribut Lowongan</div>', unsafe_allow_html=True)
  
     col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.metric(
+            "Model",
+            "Random Forest"
+        )
+
+    with col2:
+        st.metric(
+            "Accuracy",
+            "92%"
+        )
+
+    with col3:
+        st.metric(
+            "Threshold",
+            "58%"
+        )
+    
     with col1:
         has_company_logo = st.checkbox("Ada logo perusahaan",   value=sb("has_company_logo"))
     with col2:
@@ -660,7 +725,7 @@ if page == "Deteksi Lowongan":
         if not description.strip():
             st.warning("Isi minimal kolom **Deskripsi Pekerjaan** untuk memulai analisis.")
         else:
-            with st.spinner("Sedang menganalisis..."):
+            with st.spinner("Sedang menganalisis lowongan..."):
                 data = {
                     "title": title,
                     "location": location,
@@ -682,6 +747,13 @@ if page == "Deteksi Lowongan":
  
             prob_pct = prob * 100
 
+            if prob >= 0.8:
+                risk_level = "🔴 High Risk"
+            elif prob >= 0.5:
+                risk_level = "🟡 Medium Risk"
+            else:
+                risk_level = "🟢 Low Risk"
+
             # ── Perbandingan label asli vs prediksi (mode demo) ─
             if use_demo and selected_row is not None:
                 label_asli_val = int(selected_row['fraudulent'])
@@ -692,15 +764,20 @@ if page == "Deteksi Lowongan":
                 pr_txt  = "PALSU" if label == 1 else "ASLI"
                 la_warn = "#e24b4a" if label_asli_val == 1 else "#2ecc71"
                 pr_warn = "#e24b4a" if label == 1 else "#2ecc71"
-                st.markdown(f"""
-                <div style="background:#060e1a;border:1px solid #0d2240;border-radius:10px;
-                            padding:10px 16px;margin-bottom:0.75rem;display:flex;gap:20px;
-                            flex-wrap:wrap;align-items:center;font-size:13px;">
-                    <span style="color:#3a6a90;">Label dataset: <strong style="color:{la_warn};">{la_txt}</strong></span>
-                    <span style="color:#3a6a90;">Prediksi model: <strong style="color:{pr_warn};">{pr_txt}</strong></span>
-                    <span style="font-weight:600;color:{status_warna};">{status_txt}</span>
+                st.markdown("""
+                <hr>
+
+                <div style="
+                text-align:center;
+                font-size:13px;
+                color:#4a7fa8;
+                padding:15px;
+                ">
+                GhostJobs Detector © 2026 <br>
+                Capstone Project - Fake Job Detection using Machine Learning
                 </div>
                 """, unsafe_allow_html=True)
+
             if label == 1:
                 st.markdown(f"""
                 <div class="result-wrap">
@@ -824,12 +901,15 @@ if page == "Deteksi Lowongan":
 # ══════════════════════════════════════════════════════════════
 elif page == "Panduan":
 
+    st.markdown('<div class="fade-page">', unsafe_allow_html=True)
+
     st.markdown("""
     <div class="gj-header">
         <div class="gj-title">Panduan <span>Penggunaan</span></div>
         <div class="gj-sub">Cara menggunakan GhostJobs Detector dengan efektif</div>
     </div>
     """, unsafe_allow_html=True)
+ 
 
     steps = [
         ("Buka halaman Deteksi", "Klik menu 'Deteksi Lowongan' di sidebar."),
@@ -858,11 +938,14 @@ elif page == "Panduan":
     </div>
     """, unsafe_allow_html=True)
 
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # ══════════════════════════════════════════════════════════════
 # PAGE 3 — TENTANG
 # ══════════════════════════════════════════════════════════════
 elif page == "Tentang Sistem":
+
+    st.markdown('<div class="fade-page">', unsafe_allow_html=True)
 
     st.markdown("""
     <div class="gj-header">
@@ -965,11 +1048,3 @@ elif page == "Tentang Sistem":
         """, unsafe_allow_html=True)
 
     st.markdown("</div>", unsafe_allow_html=True)
-
-    # ── Disclaimer ─────────────────────────────────────────────
-    st.markdown("""
-    <div class="disclaimer">
-        ⚠ Sistem ini dikembangkan sebagai proyek capstone dan tidak dimaksudkan untuk penggunaan komersial.
-        Hasil deteksi bersifat indikatif — selalu verifikasi mandiri sebelum melamar pekerjaan.
-    </div>
-    """, unsafe_allow_html=True)
